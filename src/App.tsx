@@ -4,6 +4,7 @@ import SignInPage from "./screens/SignInPage";
 import ProfilePage from "./screens/ProfilePage";
 import DashboardPage from "./screens/DashboardPage";
 import Reports from "./screens/Reports";
+import Layout from "./components/Layout";
 
 const App = () => {
   const { authentication } = useSelectState();
@@ -13,9 +14,11 @@ const App = () => {
       <Routes>
         {authentication.isAuthenticated ? (
           <>
-            <Route path="dashboard" element={<DashboardPage />}>
-              <Route path="profile" element={<ProfilePage />} />
-              <Route path="reports" element={<Reports />} />
+            <Route path="" element={<Layout />}>
+              <Route path="dashboard" element={<DashboardPage />} />
+              <Route path="orders" element={<ProfilePage />} />
+              <Route path="users" element={<Reports />} />
+              <Route path="products" element={<Reports />} />
             </Route>
           </>
         ) : (

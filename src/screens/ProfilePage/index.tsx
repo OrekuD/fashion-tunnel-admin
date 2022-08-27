@@ -1,4 +1,4 @@
-import { SettingsIcon, UserCircleIcon } from "../../components/Icons";
+import { SettingsIcon, UserIcon } from "../../components/Icons";
 import colors from "../../constants/colors";
 import { useSelectState } from "../../store/selectors";
 import classes from "./index.module.scss";
@@ -8,7 +8,7 @@ const AccountPage = () => {
   return (
     <div className={classes["container"]}>
       <div className={classes["profile"]}>
-        <UserCircleIcon width={80} height={80} color={colors.darkgrey} />
+        <UserIcon width={80} height={80} color={colors.darkgrey} />
         <p
           className={classes["label"]}
         >{`${user.firstname} ${user.lastname}`}</p>
