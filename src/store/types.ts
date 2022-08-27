@@ -1,9 +1,19 @@
 import { PayloadAction } from "@reduxjs/toolkit";
+import Product from "../models/Product";
 
 export interface AuthenticationState {
   isAuthenticated: boolean;
   accessToken: string;
   expiryAt: number;
+}
+
+export interface UIState {
+  isCartVisible: boolean;
+  isProfileVisible: boolean;
+}
+
+export interface ProductsState {
+  list: Array<Product>;
 }
 
 export type CPA<T = any> = PayloadAction<T> & { dispatch: Function };

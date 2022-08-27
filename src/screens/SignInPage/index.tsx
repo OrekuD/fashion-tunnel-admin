@@ -12,6 +12,10 @@ import AuthenticationResponse from "../../network/responses/AuthenticationRespon
 import { AxiosResponse } from "axios";
 import { authenticationActions } from "../../store/slices/authentication.slice";
 import { userActions } from "../../store/slices/user.slice";
+import authenticationAsyncActions from "../../store/actions/authentication.action";
+import { DeviceTypes } from "../../types";
+import { useSelectState } from "../../store/selectors";
+import RequestManager from "../../store/request-manager";
 
 const SignInPage = () => {
   const [email, setEmail] = React.useState("");
@@ -19,8 +23,29 @@ const SignInPage = () => {
   const [password, setPassword] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch<any>();
+  const { request } = useSelectState();
+  const [updatedAt] = React.useState(request.updatedAt);
+
+  React.useEffect(() => {
+    if (updatedAt === request.updatedAt) {
+      return;
+    }
+    const RM = new RequestManager(request, dispatch);
+
+    if (RM.isFulfilled(authenticationAsyncActions.signin.typePrefix)) {
+      RM.consume(authenticationAsyncActions.signin.typePrefix);
+      setIsLoading(false);
+      return;
+    }
+
+    if (RM.isRejected(authenticationAsyncActions.signin.typePrefix)) {
+      RM.consume(authenticationAsyncActions.signin.typePrefix);
+      setIsLoading(false);
+      return;
+    }
+  }, [updatedAt, request.updatedAt]);
 
   const canProceed = React.useMemo(() => {
     if (emailError.trim().length > 0) {
@@ -35,30 +60,12 @@ const SignInPage = () => {
     }
     setIsLoading(true);
 
-    const payload = {
+    const payload: SignInRequest = {
       email: email.trim().toLowerCase(),
-      password: password.trim()
+      password: password.trim(),
+      deviceType: DeviceTypes.WEB,
     };
-    try {
-      const response = await API.client.post<
-        SignInRequest,
-        AxiosResponse<AuthenticationResponse>
-      >("/user/sign-in", payload);
-      dispatch(
-        authenticationActions.addAuthState({
-          accessToken: response.data.accessToken
-        })
-      );
-      dispatch(userActions.updateUser({ user: response.data.user }));
-      setIsLoading(false);
-      return response.data;
-    } catch (error: any) {
-      setIsLoading(false);
-      // console.log({ error: error?.list });
-      if ((error?.list[0]?.msg as string).toLowerCase() === "unauthorized") {
-        setEmailError("Your credentials are invalid");
-      }
-    }
+    dispatch(authenticationAsyncActions.signin(payload));
   };
 
   return (
@@ -76,7 +83,10 @@ const SignInPage = () => {
       />
       <TextInput
         value={password}
-        onChange={setPassword}
+        onChange={(text) => {
+          setPassword(text);
+          setEmailError("");
+        }}
         placeholder="Password"
         type={showPassword ? "text" : "password"}
         rightIcon={
@@ -93,7 +103,7 @@ const SignInPage = () => {
         }
       />
       <p className={classes["label"]}>
-        Don't have an account? <Link to="/sign-up">Create one</Link>
+        Forgot password? <Link to="/#">Reset</Link>
       </p>
       <Button
         label="sign in"

@@ -1,8 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelectState } from "./store/selectors";
-import SignUpPage from "./screens/SignUpPage";
 import SignInPage from "./screens/SignInPage";
 import ProfilePage from "./screens/ProfilePage";
+import DashboardPage from "./screens/DashboardPage";
+import Reports from "./screens/Reports";
 
 const App = () => {
   const { authentication } = useSelectState();
@@ -12,19 +13,21 @@ const App = () => {
       <Routes>
         {authentication.isAuthenticated ? (
           <>
-            <Route path="profile" element={<ProfilePage />} />
+            <Route path="dashboard" element={<DashboardPage />}>
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="reports" element={<Reports />} />
+            </Route>
           </>
         ) : (
           <>
             <Route path="sign-in" element={<SignInPage />} />
-            <Route path="sign-up" element={<SignUpPage />} />
           </>
         )}
         <Route
           path="*"
           element={
             <Navigate
-              to={authentication.isAuthenticated ? "/profile" : "/sign-in"}
+              to={authentication.isAuthenticated ? "/dashboard" : "/sign-in"}
               replace
             />
           }
