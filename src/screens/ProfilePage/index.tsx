@@ -9,10 +9,10 @@ const AccountPage = () => {
     <div className={classes["container"]}>
       <div className={classes["profile"]}>
         <UserIcon width={80} height={80} color={colors.darkgrey} />
-        <p
+        {/* <p
           className={classes["label"]}
         >{`${user.firstname} ${user.lastname}`}</p>
-        <p className={classes["label"]}>{user.email}</p>
+        <p className={classes["label"]}>{user.email}</p> */}
       </div>
       <div className={classes["menu"]}>
         <button className={classes["row-item"]}>

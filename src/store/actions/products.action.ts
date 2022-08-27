@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import API from "../../constants/api";
 import Product from "../../models/Product";
+import OkResponse from "../../network/responses/OkResponse";
 import { requestActions } from "../slices/request.slice";
 
 const index = createAsyncThunk("products/index", async (_, thunkApi) => {
@@ -11,11 +12,9 @@ const index = createAsyncThunk("products/index", async (_, thunkApi) => {
       "/products"
     );
 
-    // console.log({ d: response.data[0] });
     thunkApi.dispatch(requestActions.beforeFulfilled(index.typePrefix));
     return response.data;
   } catch (error) {
-    console.log({ error });
     thunkApi.dispatch(requestActions.beforeRejected(index.typePrefix));
     return thunkApi.rejectWithValue({ error });
   }
@@ -29,13 +28,34 @@ const getProduct = createAsyncThunk(
       const response = await API.client.get<any, AxiosResponse<Product>>(
         `/products/${productId}`
       );
-      // console.log({response: response.data})
       thunkApi.dispatch(requestActions.beforeFulfilled(getProduct.typePrefix));
 
       return response.data;
     } catch (error) {
-      console.log({ error: error });
       thunkApi.dispatch(requestActions.beforeRejected(getProduct.typePrefix));
+      return thunkApi.rejectWithValue({ error });
+    }
+  }
+);
+
+const deleteProduct = createAsyncThunk(
+  "products/delete",
+  async (productId: string, thunkApi) => {
+    thunkApi.dispatch(requestActions.started(deleteProduct.typePrefix));
+    try {
+      const response = await API.client.delete<any, AxiosResponse<OkResponse>>(
+        `/admin/products/${productId}`
+      );
+
+      thunkApi.dispatch(
+        requestActions.beforeFulfilled(deleteProduct.typePrefix)
+      );
+      return { ...response.data, productId };
+    } catch (error) {
+      // console.log({ error });
+      thunkApi.dispatch(
+        requestActions.beforeRejected(deleteProduct.typePrefix)
+      );
       return thunkApi.rejectWithValue({ error });
     }
   }
@@ -44,6 +64,7 @@ const getProduct = createAsyncThunk(
 const productsAsyncActions = {
   index,
   getProduct,
+  deleteProduct,
 };
 
 export default productsAsyncActions;

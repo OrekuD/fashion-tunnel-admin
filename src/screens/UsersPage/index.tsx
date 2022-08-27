@@ -4,21 +4,28 @@ import classes from "./index.module.scss";
 import API from "../../constants/api";
 import { useDispatch } from "react-redux";
 import { useSelectState } from "../../store/selectors";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import productsAsyncActions from "../../store/actions/products.action";
 import RequestManager from "../../store/request-manager";
 import ProductGender from "../../namespace/ProductGender";
 import { cedi } from "../../constants";
 import ProductCategories from "../../namespace/ProductCategories";
-import ProductItem from "./ProductItem";
+import usersAsyncActions from "../../store/actions/users.action";
+import { format } from "date-fns";
+import { EditIcon, TrashIcon } from "../../components/Icons";
+import colors from "../../constants/colors";
+import Loader from "../../components/Loader";
+import UserItem from "./UserItem";
 
-const ProductsPage = () => {
+const UsersPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isDeleting, setIsDeleting] = React.useState(false);
   const dispatch = useDispatch();
-  const { request, products } = useSelectState();
+  const { request, products, users } = useSelectState();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    dispatch(productsAsyncActions.index());
+    dispatch(usersAsyncActions.index());
   }, []);
 
   const [updatedAt] = React.useState(request.updatedAt);
@@ -29,14 +36,14 @@ const ProductsPage = () => {
     }
     const RM = new RequestManager(request, dispatch);
 
-    if (RM.isFulfilled(productsAsyncActions.index.typePrefix)) {
-      RM.consume(productsAsyncActions.index.typePrefix);
+    if (RM.isFulfilled(usersAsyncActions.index.typePrefix)) {
+      RM.consume(usersAsyncActions.index.typePrefix);
       setIsLoading(false);
       return;
     }
 
-    if (RM.isRejected(productsAsyncActions.index.typePrefix)) {
-      RM.consume(productsAsyncActions.index.typePrefix);
+    if (RM.isRejected(usersAsyncActions.index.typePrefix)) {
+      RM.consume(usersAsyncActions.index.typePrefix);
       setIsLoading(false);
       return;
     }
@@ -44,34 +51,34 @@ const ProductsPage = () => {
 
   return (
     <div className={classes["container"]}>
-      <p className={classes["title"]}>Products</p>
+      <p className={classes["title"]}>Users</p>
       <div className={classes["header"]}>
         <div className={classes["col"]}>
-          <p>Name</p>
+          <p>First name</p>
         </div>
         <div className={classes["col"]}>
-          <p>Price</p>
+          <p>Last name</p>
         </div>
         <div className={classes["col"]}>
-          <p>Category</p>
+          <p>Email</p>
         </div>
         <div className={classes["col"]}>
-          <p>Quantity</p>
+          <p>Device type</p>
         </div>
         <div className={classes["col"]}>
-          <p>Gender</p>
+          <p>Joined on</p>
         </div>
         <div className={classes["actions"]}>
           <p>Actions</p>
         </div>
       </div>
       <div className={classes["list"]}>
-        {products.list.map((product) => (
-          <ProductItem product={product} key={product.id} />
+        {users.list.map((user) => (
+          <UserItem key={user.id} user={user} />
         ))}
       </div>
     </div>
   );
 };
 
-export default ProductsPage;
+export default UsersPage;

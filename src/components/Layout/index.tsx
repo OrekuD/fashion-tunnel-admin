@@ -13,6 +13,8 @@ import {
   LogoutIcon,
   OrdersFilledIcon,
   OrdersIcon,
+  ProductsFilledIcon,
+  ProductsIcon,
   SettingsIcon,
   UserFilledIcon,
   UserIcon,
@@ -58,8 +60,8 @@ const Layout = () => {
         to: "/users",
       },
       {
-        icon: DashboardIcon,
-        filledIcon: DashboardFilledIcon,
+        icon: ProductsIcon,
+        filledIcon: ProductsFilledIcon,
         label: "Products",
         to: "/products",
       },
@@ -71,7 +73,7 @@ const Layout = () => {
     <div className={classes["container"]}>
       <div className={classes["left-content"]}>
         {menu.map(({ icon: Icon, filledIcon: FilledIcon, label, to }) => {
-          const isActive = location.pathname === to;
+          const isActive = location.pathname.includes(label.toLowerCase());
           return (
             <button
               className={classes["row-item"]}

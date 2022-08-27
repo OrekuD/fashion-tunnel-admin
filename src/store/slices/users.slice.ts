@@ -1,59 +1,55 @@
-import { CPA, ProductsState } from "./../types";
+import { CPA, UsersState } from "../types";
 import { createSlice } from "@reduxjs/toolkit";
 import productsAsyncActions from "../actions/products.action";
 import Product from "../../models/Product";
 import postRequest from "../postRequest";
 import postErrorRequest from "../postErrorRequest";
+import usersAsyncActions from "../actions/users.action";
+import User from "../../models/User";
 import OkResponse from "../../network/responses/OkResponse";
 
-const initialState: ProductsState = {
+const initialState: UsersState = {
   list: [],
 };
 
 const slice = createSlice({
-  name: "products",
+  name: "users",
   initialState,
   reducers: {
     clear: () => initialState,
   },
   extraReducers: {
-    [productsAsyncActions.index.fulfilled.type]: (
+    [usersAsyncActions.index.fulfilled.type]: (
       state,
-      action: CPA<Array<Product>>
+      action: CPA<Array<User>>
     ) => {
       state.list = action.payload;
       postRequest(action);
     },
-    [productsAsyncActions.index.rejected.type]: (_, action: CPA<any>) => {
+    [usersAsyncActions.index.rejected.type]: (_, action: CPA<any>) => {
       postErrorRequest(action, action, initialState);
     },
-    [productsAsyncActions.getProduct.fulfilled.type]: (
-      state,
-      action: CPA<Product>
-    ) => {
-      state.list.unshift(action.payload);
+    [usersAsyncActions.getUser.fulfilled.type]: (state, action: CPA<User>) => {
+      // state.list.unshift(action.payload);
       postRequest(action);
     },
-    [productsAsyncActions.getProduct.rejected.type]: (_, action: CPA<any>) => {
+    [usersAsyncActions.getUser.rejected.type]: (_, action: CPA<any>) => {
       postErrorRequest(action, action, initialState);
     },
-    [productsAsyncActions.deleteProduct.fulfilled.type]: (
+    [usersAsyncActions.deleteUser.fulfilled.type]: (
       state,
-      action: CPA<OkResponse & { productId: string }>
+      action: CPA<OkResponse & { userId: string }>
     ) => {
-      const productIndex = state.list.findIndex(
-        ({ id }) => id === action.payload.productId
+      const userIndex = state.list.findIndex(
+        ({ id }) => id === action.payload.userId
       );
-      if (productIndex < 0) {
+      if (userIndex < 0) {
         return;
       }
-      state.list.splice(productIndex, 1);
+      state.list.splice(userIndex, 1);
       postRequest(action);
     },
-    [productsAsyncActions.deleteProduct.rejected.type]: (
-      _,
-      action: CPA<any>
-    ) => {
+    [usersAsyncActions.deleteUser.rejected.type]: (_, action: CPA<any>) => {
       postErrorRequest(action, action, initialState);
     },
   },

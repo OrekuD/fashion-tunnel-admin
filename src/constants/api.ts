@@ -23,6 +23,13 @@ const interceptorErrorFn = (error: any) => {
       });
     }
 
+    if (status === 404) {
+      return Promise.reject({
+        status,
+        list: [{ msg: "Not found" }],
+      });
+    }
+
     if (status === 400) {
       if ("data" in error.response && "validation" in error.response.data) {
         return Promise.reject({
