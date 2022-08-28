@@ -8,6 +8,10 @@ import Layout from "./components/Layout";
 import ProductsPage from "./screens/ProductsPage";
 import UsersPage from "./screens/UsersPage";
 import EditProductPage from "./screens/EditProductPage";
+import OrdersPage from "./screens/OrdersPage";
+import ProductPage from "./screens/ProductPage";
+import OrderPage from "./screens/OrderPage";
+import UserPage from "./screens/UserPage";
 
 const App = () => {
   const { authentication } = useSelectState();
@@ -19,13 +23,16 @@ const App = () => {
           <>
             <Route path="" element={<Layout />}>
               <Route path="dashboard" element={<DashboardPage />} />
-              <Route path="orders" element={<ProfilePage />} />
+              <Route path="orders" element={<OrdersPage />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="products" element={<ProductsPage />} />
               <Route
                 path="products/:productId/edit"
                 element={<EditProductPage />}
               />
+              <Route path="products/:productId" element={<ProductPage />} />
+              <Route path="orders/:orderId" element={<OrderPage />} />
+              <Route path="users/:userId" element={<UserPage />} />
             </Route>
           </>
         ) : (

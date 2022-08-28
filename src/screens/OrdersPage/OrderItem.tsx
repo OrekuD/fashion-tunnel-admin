@@ -4,21 +4,28 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { EditIcon, TrashIcon } from "../../components/Icons";
 import Loader from "../../components/Loader";
+import { cedi } from "../../constants";
 import colors from "../../constants/colors";
+import Order from "../../models/Order";
+import Product from "../../models/Product";
 import User from "../../models/User";
+import ProductCategories from "../../namespace/ProductCategories";
+import ProductGender from "../../namespace/ProductGender";
+import productsAsyncActions from "../../store/actions/products.action";
 import usersAsyncActions from "../../store/actions/users.action";
 import RequestManager from "../../store/request-manager";
 import { useSelectState } from "../../store/selectors";
+import formatOrderNumber from "../../utils/formatOrderNumber";
 import classes from "./index.module.scss";
 
 interface Props {
-  user: User;
+  order: Order;
 }
 
-const UserItem = (props: Props) => {
+const OrderItem = (props: Props) => {
   const [isDeleting, setIsDeleting] = React.useState(false);
   const dispatch = useDispatch();
-  const { request, products, users } = useSelectState();
+  const { request } = useSelectState();
   const navigate = useNavigate();
   const [updatedAt] = React.useState(request.updatedAt);
 
@@ -28,14 +35,14 @@ const UserItem = (props: Props) => {
     }
     const RM = new RequestManager(request, dispatch);
 
-    if (RM.isFulfilled(usersAsyncActions.deleteUser.typePrefix)) {
-      RM.consume(usersAsyncActions.deleteUser.typePrefix);
+    if (RM.isFulfilled(productsAsyncActions.deleteProduct.typePrefix)) {
+      RM.consume(productsAsyncActions.deleteProduct.typePrefix);
       setIsDeleting(false);
       return;
     }
 
-    if (RM.isRejected(usersAsyncActions.deleteUser.typePrefix)) {
-      RM.consume(usersAsyncActions.deleteUser.typePrefix);
+    if (RM.isRejected(productsAsyncActions.deleteProduct.typePrefix)) {
+      RM.consume(productsAsyncActions.deleteProduct.typePrefix);
       setIsDeleting(false);
       return;
     }
@@ -45,47 +52,61 @@ const UserItem = (props: Props) => {
     <div
       className={classes["item"]}
       onClick={() => {
-        navigate(`/users/${props.user.id}`);
+        navigate(`/orders/${props.order.id}`);
       }}
     >
-      <img
-        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-        alt={props.user.firstname}
+      <button
         className={classes["image"]}
-      />
+        onClick={(e) => {
+          navigate(`/users/${props.order.user.id}`);
+          e.stopPropagation();
+        }}
+      >
+        <img
+          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+          alt={props.order.user.firstname}
+          // className={classes["image"]}
+        />
+      </button>
       <div className={classes["col"]}>
-        <p>{props.user.firstname}</p>
+        <p>#{formatOrderNumber(props.order.orderNumber + "", 5)}</p>
       </div>
       <div className={classes["col"]}>
-        <p>{props.user.lastname}</p>
+        <p>{`${cedi} ${props.order.total.toFixed(2)}`}</p>
       </div>
       <div className={classes["col"]}>
-        <p>{props.user.email}</p>
+        <p>{props.order.products.length}</p>
       </div>
       <div className={classes["col"]}>
-        <p>{props.user.deviceType}</p>
+        <p>{format(new Date(props.order.createdAt), "dd/MM/yyyy")}</p>
       </div>
       <div className={classes["col"]}>
-        <p>{format(new Date(props.user.createdAt), "dd/MM/yyyy")}</p>
-        {/* <p>{format(new Date(props.user.createdAt), "dd/MM/yyyy:hh:mm aa")}</p> */}
+        <button
+          onClick={(e) => {
+            navigate(`/users/${props.order.user.id}`);
+            e.stopPropagation();
+          }}
+        >
+          <p>{`${props.order.user.email}`}</p>
+        </button>
       </div>
       <div className={classes["actions"]}>
         <button
           className={classes["button"]}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
           disabled
+          onClick={(e) => {
+            // navigate(`/orders/${props.order.id}/edit`);
+            // e.stopPropagation();
+          }}
         >
           <EditIcon width={18} height={18} color={colors.white} />
         </button>
         <button
           className={classes["button"]}
-          disabled={isDeleting}
+          disabled
+          // disabled={isDeleting}
           onClick={(e) => {
             e.stopPropagation();
-            setIsDeleting(true);
-            dispatch(usersAsyncActions.deleteUser(props.user.id));
           }}
         >
           {isDeleting ? (
@@ -99,4 +120,4 @@ const UserItem = (props: Props) => {
   );
 };
 
-export default UserItem;
+export default OrderItem;

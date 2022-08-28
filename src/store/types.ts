@@ -1,4 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
+import Order from "../models/Order";
 import Product from "../models/Product";
 import User from "../models/User";
 
@@ -15,6 +16,10 @@ export interface UIState {
 
 export interface ProductsState {
   list: Array<Product>;
+}
+
+export interface OrdersState {
+  list: Array<Order>;
 }
 export interface UsersState {
   list: Array<User>;

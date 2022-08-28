@@ -8,6 +8,13 @@ export class DeviceTypes {
   static readonly WEB = "web";
 }
 
+export interface OrderProduct {
+  id: string;
+  price: number;
+  count: number;
+  total: number;
+}
+
 export namespace Request {
   export enum Status {
     PENDING = "pending",
