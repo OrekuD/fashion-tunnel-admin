@@ -7,7 +7,9 @@ const colors = {
   error: "#d62839",
   darkgrey: "#868688",
   lightpurple: "#fafafe",
-  purple: "#313579"
+  purple: "#313579",
+  lightdeepgrey: "rgba(41, 37, 37, 0.1)",
+  deepgrey: "#292525",
 };
 
 export default colors;

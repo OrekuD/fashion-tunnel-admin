@@ -5,6 +5,7 @@
   height: 100%;
   background-color: $white;
   display: flex;
+  overflow: hidden;
 
   .left-content {
     display: flex;
@@ -52,11 +53,11 @@
     }
 
     @include lg {
-      width: 20rem;
+      width: 16rem;
     }
 
     @include xl {
-      width: 20rem;
+      width: 16rem;
     }
   }
 
@@ -65,21 +66,10 @@
     flex-direction: column;
     width: 100%;
     background-color: $lightpurple;
+    // overflow-y: scroll;
 
     @include sm {
-      width: 100%;
-    }
-
-    @include md {
-      width: 70vw;
-    }
-
-    @include lg {
-      width: calc(100vw - 20rem);
-    }
-
-    @include xl {
-      width: calc(100vw - 20rem);
+      flex: 1;
     }
   }
 }

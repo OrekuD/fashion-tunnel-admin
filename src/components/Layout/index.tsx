@@ -1,11 +1,5 @@
-import { AxiosResponse } from "axios";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Button } from "..";
-import OkResponse from "../../network/responses/OkResponse";
-import { authenticationActions } from "../../store/slices/authentication.slice";
-import { userActions } from "../../store/slices/user.slice";
-import API from "../../constants/api";
 import classes from "./index.module.scss";
 import {
   DashboardFilledIcon,
@@ -15,17 +9,15 @@ import {
   OrdersIcon,
   ProductsFilledIcon,
   ProductsIcon,
-  SettingsIcon,
   UserFilledIcon,
   UserIcon,
 } from "../Icons";
 import colors from "../../constants/colors";
 import Loader from "../Loader";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import authenticationAsyncActions from "../../store/actions/authentication.action";
 
 const Layout = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
   const [isSigningOut, setIsSigningOut] = React.useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
