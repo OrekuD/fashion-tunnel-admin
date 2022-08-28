@@ -9,6 +9,7 @@ import incomeAsyncActions from "../../store/actions/income.action";
 import RequestManager from "../../store/request-manager";
 import { useSelectState } from "../../store/selectors";
 import formatOrderNumber from "../../utils/formatOrderNumber";
+import Chart from "./Chart";
 import classes from "./index.module.scss";
 
 const DashboardPage = () => {
@@ -50,7 +51,9 @@ const DashboardPage = () => {
       </div>
       <div className={classes["grid"]}>
         <div className={classes["section"]}>
-          <div className={classes["first-wrapper"]} />
+          <div className={classes["first-wrapper"]}>
+            <Chart />
+          </div>
           <div className={classes["wrapper"]}>
             <div className={classes["second-wrapper"]}>
               <p className={classes["title"]}>Available balance</p>
