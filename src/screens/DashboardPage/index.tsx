@@ -1,28 +1,63 @@
 import { format } from "date-fns";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FilterIcon } from "../../components/Icons";
 import { cedi } from "../../constants";
 import colors from "../../constants/colors";
+import incomeAsyncActions from "../../store/actions/income.action";
+import RequestManager from "../../store/request-manager";
 import { useSelectState } from "../../store/selectors";
 import formatOrderNumber from "../../utils/formatOrderNumber";
 import classes from "./index.module.scss";
 
 const DashboardPage = () => {
-  const { request, orders, users } = useSelectState();
+  const { request, orders, users, income, user } = useSelectState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isFetchingIncome, setIsFetchingIncome] = React.useState(true);
+
+  React.useEffect(() => {
+    dispatch(incomeAsyncActions.index());
+  }, []);
+
+  const [updatedAt] = React.useState(request.updatedAt);
+
+  React.useEffect(() => {
+    if (updatedAt === request.updatedAt) {
+      return;
+    }
+    const RM = new RequestManager(request, dispatch);
+
+    if (RM.isFulfilled(incomeAsyncActions.index.typePrefix)) {
+      RM.consume(incomeAsyncActions.index.typePrefix);
+      setIsFetchingIncome(false);
+      return;
+    }
+
+    if (RM.isRejected(incomeAsyncActions.index.typePrefix)) {
+      RM.consume(incomeAsyncActions.index.typePrefix);
+      setIsFetchingIncome(false);
+      return;
+    }
+  }, [updatedAt, request.updatedAt]);
 
   return (
     <div className={classes["container"]}>
       <div className={classes["top-content"]}>
-        <p>ok</p>
-        <p>ok</p>
+        <p className={classes["name"]}>Hello, David</p>
+        <p className={classes["label"]}>Your analytics for today</p>
       </div>
       <div className={classes["grid"]}>
         <div className={classes["section"]}>
           <div className={classes["first-wrapper"]} />
           <div className={classes["wrapper"]}>
-            <div className={classes["second-wrapper"]} />
+            <div className={classes["second-wrapper"]}>
+              <p className={classes["title"]}>Available balance</p>
+              <p
+                className={classes["amount"]}
+              >{`${cedi} ${income.amount.toFixed(2)}`}</p>
+            </div>
             <div className={classes["third-wrapper"]} />
           </div>
         </div>

@@ -21,6 +21,10 @@ export interface ProductsState {
 export interface OrdersState {
   list: Array<Order>;
 }
+
+export interface IncomeState {
+  amount: number;
+}
 export interface UsersState {
   list: Array<User>;
 }

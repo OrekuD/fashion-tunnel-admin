@@ -11,6 +11,17 @@
   .top-content {
     width: 100%;
     margin-bottom: 2rem;
+
+    .label {
+      font-size: 0.875rem;
+      color: rgba(41, 37, 37, 0.5);
+    }
+
+    .name {
+      font-size: 1.4rem;
+      color: $deepgrey;
+      font-weight: 500;
+    }
   }
 
   .grid {
@@ -38,10 +49,24 @@
 
         .second-wrapper {
           width: 100%;
-          height: 50vh;
+          // height: 50vh;
           background-color: $white;
           border-radius: 12px;
           margin-bottom: 2rem;
+          padding: 1.5rem;
+          display: flex;
+          flex-direction: column;
+
+          .title {
+            font-weight: 500;
+            font-size: 0.875rem;
+          }
+
+          .amount {
+            font-weight: 700;
+            font-size: 1.675rem;
+            margin-top: auto;
+          }
         }
 
         .third-wrapper {
