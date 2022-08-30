@@ -73,6 +73,9 @@ const OrdersPage = () => {
             <p>QTY</p>
           </div>
           <div className={classes["col"]}>
+            <p>Status</p>
+          </div>
+          <div className={classes["col"]}>
             <p>Created at</p>
           </div>
           <div className={`${classes["col"]} ${classes["lg"]}`}>

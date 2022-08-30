@@ -4,7 +4,7 @@ import { useSelectState } from "../../store/selectors";
 import classes from "./index.module.scss";
 
 const AccountPage = () => {
-  const { user } = useSelectState();
+  const { admin } = useSelectState();
   return (
     <div className={classes["container"]}>
       <div className={classes["profile"]}>

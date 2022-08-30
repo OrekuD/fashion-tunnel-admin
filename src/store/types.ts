@@ -1,7 +1,9 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import Order from "../models/Order";
 import Product from "../models/Product";
+import SimpleOrder from "../models/SimpleOrder";
 import User from "../models/User";
+import { DetailedOrderProduct } from "../types";
 
 export interface AuthenticationState {
   isAuthenticated: boolean;
@@ -19,7 +21,7 @@ export interface ProductsState {
 }
 
 export interface OrdersState {
-  list: Array<Order>;
+  list: Array<SimpleOrder>;
 }
 
 export interface IncomeState {
@@ -27,6 +29,18 @@ export interface IncomeState {
 }
 export interface UsersState {
   list: Array<User>;
+}
+
+export interface OrderState {
+  order: Order | null;
+}
+
+export interface ProductState {
+  product: Product | null;
+}
+
+export interface UserState {
+  user: User | null;
 }
 
 export type CPA<T = any> = PayloadAction<T> & { dispatch: Function };

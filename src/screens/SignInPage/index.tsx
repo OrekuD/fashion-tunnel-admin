@@ -11,7 +11,6 @@ import API from "../../constants/api";
 import AuthenticationResponse from "../../network/responses/AuthenticationResponse";
 import { AxiosResponse } from "axios";
 import { authenticationActions } from "../../store/slices/authentication.slice";
-import { userActions } from "../../store/slices/user.slice";
 import authenticationAsyncActions from "../../store/actions/authentication.action";
 import { DeviceTypes } from "../../types";
 import { useSelectState } from "../../store/selectors";

@@ -3,23 +3,29 @@ import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { combineReducers } from "redux";
 import API from "../constants/api";
 import authentication from "./slices/authentication.slice";
-import user from "./slices/user.slice";
+import admin from "./slices/admin.slice";
 import ui from "./slices/ui.slice";
 import products from "./slices/products.slice";
 import request from "./slices/request.slice";
 import users from "./slices/users.slice";
 import orders from "./slices/orders.slice";
 import income from "./slices/income.slice";
+import order from "./slices/order.slice";
+import user from "./slices/user.slice";
+import product from "./slices/product.slice";
 
 const reducers = {
   authentication,
-  user,
+  admin,
   ui,
   products,
   request,
   users,
   orders,
   income,
+  order,
+  user,
+  product,
 };
 
 const rootReducer = combineReducers(reducers);

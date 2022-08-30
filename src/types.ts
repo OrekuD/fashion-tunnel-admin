@@ -1,4 +1,6 @@
 import moment from "moment";
+import ProductCategories from "./namespace/ProductCategories";
+import ProductGender from "./namespace/ProductGender";
 
 export type SizeType = "cloth" | "shoe";
 
@@ -13,6 +15,21 @@ export interface OrderProduct {
   price: number;
   count: number;
   total: number;
+}
+
+export interface DetailedOrderProduct {
+  count: number;
+  total: number;
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  productQuantity: number;
+  extraInfo: string;
+  gender: ProductGender.Status;
+  productCategory: ProductCategories.Status;
+  sizeType: SizeType;
+  images: Array<string>;
 }
 
 export namespace Request {

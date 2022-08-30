@@ -1,35 +1,36 @@
-import { CPA, OrdersState } from "../types";
+import { CPA, OrderState } from "../types";
 import { createSlice } from "@reduxjs/toolkit";
 import postRequest from "../postRequest";
 import postErrorRequest from "../postErrorRequest";
 import ordersAsyncActions from "../actions/orders.action";
+import { DetailedOrderProduct } from "../../types";
 import Order from "../../models/Order";
-import SimpleOrder from "../../models/SimpleOrder";
 
-const initialState: OrdersState = {
-  list: [],
+const initialState: OrderState = {
+  order: null,
 };
 
 const slice = createSlice({
-  name: "orders",
+  name: "order",
   initialState,
   reducers: {
     clear: () => initialState,
   },
   extraReducers: {
-    [ordersAsyncActions.index.fulfilled.type]: (
+    [ordersAsyncActions.getOrder.fulfilled.type]: (
       state,
-      action: CPA<Array<SimpleOrder>>
+      action: CPA<Order>
     ) => {
-      state.list = action.payload;
+      state.order = action.payload;
       postRequest(action);
     },
-    [ordersAsyncActions.index.rejected.type]: (_, action: CPA<any>) => {
+    [ordersAsyncActions.getOrder.rejected.type]: (state, action: CPA<any>) => {
+      state.order = null;
       postErrorRequest(action, action, initialState);
     },
   },
 });
 
-export const ordersActions = slice.actions;
+export const orderActions = slice.actions;
 
 export default slice.reducer;

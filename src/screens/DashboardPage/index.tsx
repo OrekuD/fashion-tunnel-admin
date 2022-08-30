@@ -13,7 +13,7 @@ import Chart from "./Chart";
 import classes from "./index.module.scss";
 
 const DashboardPage = () => {
-  const { request, orders, users, income, user } = useSelectState();
+  const { request, orders, users, income } = useSelectState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isFetchingIncome, setIsFetchingIncome] = React.useState(true);
@@ -114,7 +114,7 @@ const DashboardPage = () => {
                           src={
                             "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
                           }
-                          alt={order.user.firstname}
+                          alt={order.user.email}
                           // className={classes["image"]}
                         />
                       </button>
@@ -125,7 +125,7 @@ const DashboardPage = () => {
                         <p>{`${cedi} ${order.total.toFixed(2)}`}</p>
                       </div>
                       <div className={`${classes["col"]} ${classes["sm"]}`}>
-                        <p>{order.products.length}</p>
+                        <p>{order.numberOfProducts}</p>
                       </div>
                       <div className={classes["col"]}>
                         <p>{format(new Date(order.createdAt), "dd/MM/yyyy")}</p>

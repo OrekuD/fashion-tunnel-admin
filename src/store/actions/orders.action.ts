@@ -2,19 +2,22 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import API from "../../constants/api";
 import Order from "../../models/Order";
+import SimpleOrder from "../../models/SimpleOrder";
 import { requestActions } from "../slices/request.slice";
 
 const index = createAsyncThunk("orders/index", async (_, thunkApi) => {
   thunkApi.dispatch(requestActions.started(index.typePrefix));
   try {
-    const response = await API.client.get<any, AxiosResponse<Array<Order>>>(
-      "/admin/orders"
-    );
+    const response = await API.client.get<
+      any,
+      AxiosResponse<Array<SimpleOrder>>
+    >("/admin/orders");
 
     // console.log({ data: response.data });
     thunkApi.dispatch(requestActions.beforeFulfilled(index.typePrefix));
     return response.data;
   } catch (error) {
+    // console.log({ ____error: error });
     thunkApi.dispatch(requestActions.beforeRejected(index.typePrefix));
     return thunkApi.rejectWithValue({ error });
   }
@@ -32,6 +35,7 @@ const getOrder = createAsyncThunk(
 
       return response.data;
     } catch (error) {
+      // console.log({ ____error: (error as any)?.list });
       thunkApi.dispatch(requestActions.beforeRejected(getOrder.typePrefix));
       return thunkApi.rejectWithValue({ error });
     }

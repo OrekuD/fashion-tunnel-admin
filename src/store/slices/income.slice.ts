@@ -28,6 +28,6 @@ const slice = createSlice({
   },
 });
 
-export const productActions = slice.actions;
+export const incomeActions = slice.actions;
 
 export default slice.reducer;

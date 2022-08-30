@@ -9,7 +9,7 @@ const index = createAsyncThunk("products/index", async (_, thunkApi) => {
   thunkApi.dispatch(requestActions.started(index.typePrefix));
   try {
     const response = await API.client.get<any, AxiosResponse<Array<Product>>>(
-      "/products"
+      "/admin/products"
     );
 
     thunkApi.dispatch(requestActions.beforeFulfilled(index.typePrefix));
@@ -26,7 +26,7 @@ const getProduct = createAsyncThunk(
     thunkApi.dispatch(requestActions.started(getProduct.typePrefix));
     try {
       const response = await API.client.get<any, AxiosResponse<Product>>(
-        `/products/${productId}`
+        `/admin/products/${productId}`
       );
       thunkApi.dispatch(requestActions.beforeFulfilled(getProduct.typePrefix));
 

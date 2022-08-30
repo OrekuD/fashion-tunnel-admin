@@ -8,6 +8,7 @@ import { cedi } from "../../constants";
 import colors from "../../constants/colors";
 import Order from "../../models/Order";
 import Product from "../../models/Product";
+import SimpleOrder from "../../models/SimpleOrder";
 import User from "../../models/User";
 import ProductCategories from "../../namespace/ProductCategories";
 import ProductGender from "../../namespace/ProductGender";
@@ -19,7 +20,7 @@ import formatOrderNumber from "../../utils/formatOrderNumber";
 import classes from "./index.module.scss";
 
 interface Props {
-  order: Order;
+  order: SimpleOrder;
 }
 
 const OrderItem = (props: Props) => {
@@ -58,13 +59,13 @@ const OrderItem = (props: Props) => {
       <button
         className={classes["image"]}
         onClick={(e) => {
-          navigate(`/users/${props.order.user.id}`);
+          navigate(`/users/${props.order.user?.id}`);
           e.stopPropagation();
         }}
       >
         <img
           src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-          alt={props.order.user.firstname}
+          alt={props.order.user.email}
           // className={classes["image"]}
         />
       </button>
@@ -75,7 +76,10 @@ const OrderItem = (props: Props) => {
         <p>{`${cedi} ${props.order.total.toFixed(2)}`}</p>
       </div>
       <div className={classes["col"]}>
-        <p>{props.order.products.length}</p>
+        <p>{props.order.numberOfProducts}</p>
+      </div>
+      <div className={classes["col"]}>
+        <p>{props.order.orderStatus}</p>
       </div>
       <div className={classes["col"]}>
         <p>{format(new Date(props.order.createdAt), "dd/MM/yyyy")}</p>

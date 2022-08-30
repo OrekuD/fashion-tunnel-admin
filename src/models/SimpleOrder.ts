@@ -1,15 +1,16 @@
 import OrderStatus from "../namespace/OrderStatus";
-import { DetailedOrderProduct, OrderProduct } from "../types";
+import { OrderProduct } from "../types";
 import User from "./User";
 
-export default interface Order {
+export default interface SimpleOrder {
   id: string;
   total: number;
-  subtotal: number;
-  discount: number;
-  products: Array<DetailedOrderProduct>;
-  user: User;
   orderNumber: number;
+  numberOfProducts: number;
   orderStatus: OrderStatus.Status;
+  user: {
+    id: string;
+    email: string;
+  };
   createdAt: string;
 }
