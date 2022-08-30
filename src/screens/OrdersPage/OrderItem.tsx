@@ -80,7 +80,7 @@ const OrderItem = (props: Props) => {
       <div className={classes["col"]}>
         <p>{format(new Date(props.order.createdAt), "dd/MM/yyyy")}</p>
       </div>
-      <div className={classes["col"]}>
+      <div className={`${classes["col"]} ${classes["lg"]}`}>
         <button
           onClick={(e) => {
             navigate(`/users/${props.order.user.id}`);

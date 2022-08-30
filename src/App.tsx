@@ -21,6 +21,7 @@ const App = () => {
       <Routes>
         {authentication.isAuthenticated ? (
           <>
+            <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path="" element={<Layout />}>
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="orders" element={<OrdersPage />} />

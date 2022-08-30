@@ -1,24 +1,15 @@
-import { AxiosResponse } from "axios";
 import React from "react";
 import classes from "./index.module.scss";
-import API from "../../constants/api";
 import { useDispatch } from "react-redux";
 import { useSelectState } from "../../store/selectors";
-import { Link, useNavigate } from "react-router-dom";
-import productsAsyncActions from "../../store/actions/products.action";
+import { useNavigate } from "react-router-dom";
 import RequestManager from "../../store/request-manager";
-import ProductGender from "../../namespace/ProductGender";
-import { cedi } from "../../constants";
-import ProductCategories from "../../namespace/ProductCategories";
 import usersAsyncActions from "../../store/actions/users.action";
-import { format } from "date-fns";
-import { EditIcon, TrashIcon } from "../../components/Icons";
-import colors from "../../constants/colors";
-import Loader from "../../components/Loader";
 import UserItem from "./UserItem";
 
 const UsersPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isScrollTop, setIsScrollTop] = React.useState(true);
   const [isDeleting, setIsDeleting] = React.useState(false);
   const dispatch = useDispatch();
   const { request, products, users } = useSelectState();
@@ -52,29 +43,46 @@ const UsersPage = () => {
   return (
     <div className={classes["container"]}>
       <p className={classes["title"]}>Users</p>
-      <div className={classes["header"]}>
-        <div className={classes["col"]}>
-          <p>First name</p>
+      <div
+        className={classes["list"]}
+        onScroll={(e) => {
+          if ((e.target as any)?.scrollTop === 0) {
+            setIsScrollTop(true);
+          } else {
+            setIsScrollTop(false);
+          }
+        }}
+      >
+        <div
+          className={`${classes["item"]} ${classes["header"]}`}
+          style={{
+            boxShadow: isScrollTop
+              ? undefined
+              : " 6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028), 22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042), 100px 100px 80px rgba(0, 0, 0, 0.07)",
+          }}
+        >
+          <div className={classes["image"]} />
+          <div className={classes["col"]}>
+            <p>First name</p>
+          </div>
+          <div className={classes["col"]}>
+            <p>Last name</p>
+          </div>
+          <div className={`${classes["col"]} ${classes["lg"]}`}>
+            <p>Email</p>
+          </div>
+          <div className={classes["col"]}>
+            <p>Device type</p>
+          </div>
+          <div className={classes["col"]}>
+            <p>Joined on</p>
+          </div>
+          <div className={classes["actions"]}>
+            <p>Actions</p>
+          </div>
         </div>
-        <div className={classes["col"]}>
-          <p>Last name</p>
-        </div>
-        <div className={classes["col"]}>
-          <p>Email</p>
-        </div>
-        <div className={classes["col"]}>
-          <p>Device type</p>
-        </div>
-        <div className={classes["col"]}>
-          <p>Joined on</p>
-        </div>
-        <div className={classes["actions"]}>
-          <p>Actions</p>
-        </div>
-      </div>
-      <div className={classes["list"]}>
-        {users.list.map((user) => (
-          <UserItem key={user.id} user={user} />
+        {users.list.map((user, index) => (
+          <UserItem key={index} user={user} />
         ))}
       </div>
     </div>

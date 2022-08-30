@@ -1,4 +1,5 @@
 @import "../../scss/colors.scss";
+@import "../../scss/breakpoints.scss";
 
 .container {
   height: 100%;
@@ -16,67 +17,27 @@
     margin-top: 3.5rem;
   }
 
-  .header {
-    display: flex;
-    align-items: center;
-    padding: 0.75rem 3rem;
-    background-color: $white;
-    margin-bottom: 1rem;
-    border-radius: 0.75rem;
-
-    p {
-      font-size: 0.875rem;
-      text-transform: capitalize;
-      font-weight: 500;
-    }
-
-    .actions {
-      width: 80px;
-    }
-
-    .col {
-      &:nth-of-type(1) {
-        margin-left: calc(2rem + 44px);
-        flex: 2;
-        // background-color: red;
-      }
-
-      &:nth-of-type(2) {
-        flex: 1;
-        // background-color: yellow;
-      }
-
-      &:nth-of-type(3) {
-        flex: 1;
-        // background-color: green;
-      }
-
-      &:nth-of-type(4) {
-        flex: 1;
-        // background-color: blue;
-      }
-
-      &:nth-of-type(5) {
-        flex: 1;
-        // background-color: pink;
-      }
-    }
+  .actions {
+    width: 80px;
   }
 
   .list {
     flex: 1;
     background-color: white;
-    padding: 1rem 1rem;
+    padding: 0rem 1rem;
     border-radius: 0.75rem;
     overflow-y: scroll;
+    position: relative;
 
     .item {
       background-color: #fafcfe;
       width: 100%;
-      padding: 0.75rem 2rem;
+      width: fit-content;
+      padding: 0.75rem 1rem;
       border-radius: 0.75rem;
-      margin-bottom: 0.75rem;
+      margin: 0 0.5rem 0.75rem 0.5rem;
       display: flex;
+      align-items: center;
       cursor: pointer;
 
       .image {
@@ -90,31 +51,13 @@
       .col {
         display: flex;
         align-items: center;
+        min-width: 120px;
+        flex: 1;
+      }
 
-        &:nth-of-type(1) {
-          flex: 2;
-          // background-color: red;
-        }
-
-        &:nth-of-type(2) {
-          flex: 1;
-          // background-color: yellow;
-        }
-
-        &:nth-of-type(3) {
-          flex: 1;
-          // background-color: green;
-        }
-
-        &:nth-of-type(4) {
-          flex: 1;
-          // background-color: blue;
-        }
-
-        &:nth-of-type(5) {
-          flex: 1;
-          // background-color: pink;
-        }
+      .lg {
+        flex: 1.5;
+        min-width: 180px;
       }
 
       .actions {
@@ -146,6 +89,45 @@
       p {
         font-size: 0.875rem;
         text-transform: capitalize;
+      }
+    }
+
+    .header {
+      margin: 2rem 1rem;
+      position: sticky;
+      left: 0;
+      top: 1rem;
+      z-index: 10;
+      transition: all 0.2s ease-in-out;
+
+      .actions,
+      .col {
+        p {
+          font-size: 0.875rem;
+          text-transform: capitalize;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  @include md {
+    .list {
+      .item {
+        margin: 0 1rem 0.75rem 1rem;
+        padding: 0.75rem 2rem;
+        width: calc(100% - 2rem);
+
+        .col {
+          min-width: 10px;
+        }
+
+        .lg {
+          min-width: 10px;
+        }
+      }
+      .header {
+        margin: 1rem 1rem;
       }
     }
   }

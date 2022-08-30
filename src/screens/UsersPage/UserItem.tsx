@@ -59,7 +59,7 @@ const UserItem = (props: Props) => {
       <div className={classes["col"]}>
         <p>{props.user.lastname}</p>
       </div>
-      <div className={classes["col"]}>
+      <div className={`${classes["col"]} ${classes["lg"]}`}>
         <p>{props.user.email}</p>
       </div>
       <div className={classes["col"]}>
@@ -81,7 +81,8 @@ const UserItem = (props: Props) => {
         </button>
         <button
           className={classes["button"]}
-          disabled={isDeleting}
+          // disabled={isDeleting}
+          disabled
           onClick={(e) => {
             e.stopPropagation();
             setIsDeleting(true);
