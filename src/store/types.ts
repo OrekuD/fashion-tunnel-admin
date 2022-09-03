@@ -25,7 +25,7 @@ export interface OrdersState {
 }
 
 export interface IncomeState {
-  amount: number;
+  total: number;
 }
 export interface UsersState {
   list: Array<User>;

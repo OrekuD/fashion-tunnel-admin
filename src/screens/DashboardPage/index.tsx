@@ -11,6 +11,8 @@ import { useSelectState } from "../../store/selectors";
 import formatOrderNumber from "../../utils/formatOrderNumber";
 import Chart from "./Chart";
 import classes from "./index.module.scss";
+import API from "../../constants/api";
+import { AxiosResponse } from "axios";
 
 const DashboardPage = () => {
   const { request, orders, users, income } = useSelectState();
@@ -43,11 +45,25 @@ const DashboardPage = () => {
     }
   }, [updatedAt, request.updatedAt]);
 
+  const test = async () => {
+    try {
+      const response = await API.client.get<any, AxiosResponse<any>>(
+        `/admin/socket/630e2daa9e58fcc002a5057a`
+      );
+
+      console.log({ data: response.data });
+      return response.data;
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
   return (
     <div className={classes["container"]}>
       <div className={classes["top-content"]}>
         <p className={classes["name"]}>Hello, David</p>
         <p className={classes["label"]}>Your analytics for today</p>
+        <button onClick={test}>test</button>
       </div>
       <div className={classes["grid"]}>
         <div className={classes["section"]}>
@@ -57,9 +73,9 @@ const DashboardPage = () => {
           <div className={classes["wrapper"]}>
             <div className={classes["second-wrapper"]}>
               <p className={classes["title"]}>Available balance</p>
-              <p
-                className={classes["amount"]}
-              >{`${cedi} ${income.amount.toFixed(2)}`}</p>
+              <p className={classes["amount"]}>{`${cedi} ${income.total.toFixed(
+                2
+              )}`}</p>
             </div>
             <div className={classes["third-wrapper"]} />
           </div>
