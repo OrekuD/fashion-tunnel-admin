@@ -73,9 +73,9 @@ const DashboardPage = () => {
           <div className={classes["wrapper"]}>
             <div className={classes["second-wrapper"]}>
               <p className={classes["title"]}>Available balance</p>
-              <p className={classes["amount"]}>{`${cedi} ${income.total.toFixed(
-                2
-              )}`}</p>
+              <p
+                className={classes["amount"]}
+              >{`${cedi} ${income?.total?.toFixed(2)}`}</p>
             </div>
             <div className={classes["third-wrapper"]} />
           </div>
