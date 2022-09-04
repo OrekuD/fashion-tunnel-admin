@@ -37,7 +37,7 @@ const slice = createSlice({
       action: CPA<UpdateOrderStatusResponse>
     ) => {
       if (!state?.order) return;
-      state.order.orderStatus = action.payload.status;
+      state.order.status = action.payload.status;
       postRequest(action);
     },
     [orderAsyncActions.updateOrderStatus.rejected.type]: (

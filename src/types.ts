@@ -1,4 +1,5 @@
 import moment from "moment";
+import OrderStatus from "./namespace/OrderStatus";
 import ProductCategories from "./namespace/ProductCategories";
 import ProductGender from "./namespace/ProductGender";
 
@@ -60,4 +61,9 @@ export namespace Request {
 
 export class Timing {
   public static now = () => moment().valueOf();
+}
+
+export interface OrderStatusTimeStamp {
+  status: OrderStatus.Status;
+  time: string;
 }

@@ -13,15 +13,21 @@ import Chart from "./Chart";
 import classes from "./index.module.scss";
 import API from "../../constants/api";
 import { AxiosResponse } from "axios";
+import ordersAsyncActions from "../../store/actions/orders.action";
+import usersAsyncActions from "../../store/actions/users.action";
 
 const DashboardPage = () => {
   const { request, orders, users, income } = useSelectState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isFetchingIncome, setIsFetchingIncome] = React.useState(true);
+  const [isFetchingOrders, setIsFetchingOrders] = React.useState(true);
+  const [isFetchingUsers, setIsFetchingUsers] = React.useState(true);
 
   React.useEffect(() => {
     dispatch(incomeAsyncActions.index());
+    dispatch(ordersAsyncActions.index());
+    dispatch(usersAsyncActions.index());
   }, []);
 
   const [updatedAt] = React.useState(request.updatedAt);
@@ -43,27 +49,37 @@ const DashboardPage = () => {
       setIsFetchingIncome(false);
       return;
     }
-  }, [updatedAt, request.updatedAt]);
 
-  const test = async () => {
-    try {
-      const response = await API.client.get<any, AxiosResponse<any>>(
-        `/admin/socket/630e2daa9e58fcc002a5057a`
-      );
-
-      console.log({ data: response.data });
-      return response.data;
-    } catch (error) {
-      console.log({ error });
+    if (RM.isFulfilled(ordersAsyncActions.index.typePrefix)) {
+      RM.consume(ordersAsyncActions.index.typePrefix);
+      setIsFetchingOrders(false);
+      return;
     }
-  };
+
+    if (RM.isRejected(ordersAsyncActions.index.typePrefix)) {
+      RM.consume(ordersAsyncActions.index.typePrefix);
+      setIsFetchingOrders(false);
+      return;
+    }
+
+    if (RM.isFulfilled(usersAsyncActions.index.typePrefix)) {
+      RM.consume(usersAsyncActions.index.typePrefix);
+      setIsFetchingUsers(false);
+      return;
+    }
+
+    if (RM.isRejected(usersAsyncActions.index.typePrefix)) {
+      RM.consume(usersAsyncActions.index.typePrefix);
+      setIsFetchingUsers(false);
+      return;
+    }
+  }, [updatedAt, request.updatedAt]);
 
   return (
     <div className={classes["container"]}>
       <div className={classes["top-content"]}>
         <p className={classes["name"]}>Hello, David</p>
         <p className={classes["label"]}>Your analytics for today</p>
-        <button onClick={test}>test</button>
       </div>
       <div className={classes["grid"]}>
         <div className={classes["section"]}>

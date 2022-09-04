@@ -1,5 +1,5 @@
 import OrderStatus from "../namespace/OrderStatus";
-import { OrderProduct } from "../types";
+import { OrderProduct, OrderStatusTimeStamp } from "../types";
 import User from "./User";
 
 export default interface SimpleOrder {
@@ -7,7 +7,8 @@ export default interface SimpleOrder {
   total: number;
   orderNumber: number;
   numberOfProducts: number;
-  orderStatus: OrderStatus.Status;
+  status: OrderStatus.Status;
+  statusTimeStamps: Array<OrderStatusTimeStamp>;
   user: {
     id: string;
     email: string;

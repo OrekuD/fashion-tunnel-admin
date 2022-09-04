@@ -39,9 +39,25 @@ const slice = createSlice({
       if (orderIndex < 0) {
         return;
       }
+      const statusTimeStamps = state.list[orderIndex].statusTimeStamps;
+      const timeStampIndex = statusTimeStamps.findIndex(
+        ({ status }) => status === action.payload.status
+      );
+      if (timeStampIndex < 0) {
+        statusTimeStamps.unshift({
+          status: action.payload.status,
+          time: action.payload.timeStamp,
+        });
+      } else {
+        statusTimeStamps.splice(timeStampIndex, 1, {
+          status: action.payload.status,
+          time: action.payload.timeStamp,
+        });
+      }
       state.list.splice(orderIndex, 1, {
         ...state.list[orderIndex],
-        orderStatus: action.payload.status,
+        status: action.payload.status,
+        statusTimeStamps,
       });
     },
   },

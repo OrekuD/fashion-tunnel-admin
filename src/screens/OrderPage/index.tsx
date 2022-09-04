@@ -58,7 +58,7 @@ const OrderPage = () => {
     if (!order?.order) return;
     if (isUpdating) return;
 
-    let nextStage = order.order.orderStatus;
+    let nextStage = order.order.status;
 
     switch (nextStage) {
       case OrderStatus.Status.PENDING:
@@ -95,7 +95,7 @@ const OrderPage = () => {
     <div className={classes["container"]}>
       <p className={classes["title"]}>Order page</p>
       <p>{order.order.id}</p>
-      <p>{OrderStatus.State.text(order.order.orderStatus)}</p>
+      <p>{OrderStatus.State.text(order.order.status)}</p>
       <Button
         label="Next stage"
         onClick={nextStage}

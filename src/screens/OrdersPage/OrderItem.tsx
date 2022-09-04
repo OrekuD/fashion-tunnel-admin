@@ -80,7 +80,7 @@ const OrderItem = (props: Props) => {
         <p>{props.order.numberOfProducts}</p>
       </div>
       <div className={classes["col"]}>
-        <p>{OrderStatus.State.text(props.order.orderStatus)}</p>
+        <p>{OrderStatus.State.text(props.order.status)}</p>
       </div>
       <div className={classes["col"]}>
         <p>{format(new Date(props.order.createdAt), "dd/MM/yyyy")}</p>
