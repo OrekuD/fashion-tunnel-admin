@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import postRequest from "../postRequest";
 import postErrorRequest from "../postErrorRequest";
 import orderAsyncActions from "../actions/order.action";
-import { DetailedOrderProduct } from "../../types";
 import Order from "../../models/Order";
 import UpdateOrderStatusResponse from "../../network/responses/UpdateOrderStatusResponse";
 import ErrorResponse from "../../network/responses/ErrorResponse";

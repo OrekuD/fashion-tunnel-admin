@@ -7,10 +7,6 @@ import colors from "../../constants/colors";
 import SignInRequest from "../../network/requests/SignInRequest";
 import isAnyEmpty from "../../utils/isAnyEmpty";
 import classes from "./index.module.scss";
-import API from "../../constants/api";
-import AuthenticationResponse from "../../network/responses/AuthenticationResponse";
-import { AxiosResponse } from "axios";
-import { authenticationActions } from "../../store/slices/authentication.slice";
 import authenticationAsyncActions from "../../store/actions/authentication.action";
 import { DeviceTypes } from "../../types";
 import { useSelectState } from "../../store/selectors";
@@ -42,6 +38,7 @@ const SignInPage = () => {
     if (RM.isRejected(authenticationAsyncActions.signin.typePrefix)) {
       RM.consume(authenticationAsyncActions.signin.typePrefix);
       setIsLoading(false);
+      setEmailError("Your credentials are invalid");
       return;
     }
   }, [updatedAt, request.updatedAt]);

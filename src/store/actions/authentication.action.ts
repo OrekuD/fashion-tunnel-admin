@@ -16,7 +16,7 @@ const signin = createAsyncThunk(
       const response = await API.client.post<
         SignInRequest,
         AxiosResponse<AuthenticationResponse>
-      >("/user/sign-in", payload);
+      >("/admin/auth/sign-in", payload);
 
       // console.log({ d: response.data });
       thunkApi.dispatch(requestActions.beforeFulfilled(signin.typePrefix));

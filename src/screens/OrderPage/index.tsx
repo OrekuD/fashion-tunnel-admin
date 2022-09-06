@@ -95,6 +95,7 @@ const OrderPage = () => {
     <div className={classes["container"]}>
       <p className={classes["title"]}>Order page</p>
       <p>{order.order.id}</p>
+      <p>{order.order.orderNumber}</p>
       <p>{OrderStatus.State.text(order.order.status)}</p>
       <Button
         label="Next stage"
