@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ import ordersAsyncActions from "../../store/actions/orders.action";
 import usersAsyncActions from "../../store/actions/users.action";
 import summaryAsyncActions from "../../store/actions/summary.action";
 import formatNumber from "../../utils/formatNumber";
+import OrderStatus from "../../namespace/OrderStatus";
 
 const DashboardPage = () => {
   const { request, orders, users, summary } = useSelectState();
@@ -124,8 +125,8 @@ const DashboardPage = () => {
                 <div className={classes["col"]}>
                   <p>Total</p>
                 </div>
-                <div className={`${classes["col"]} ${classes["sm"]}`}>
-                  <p>QTY</p>
+                <div className={`${classes["col"]} ${classes["last"]}`}>
+                  <p>Status</p>
                 </div>
                 <div className={classes["col"]}>
                   <p>Created at</p>
@@ -173,13 +174,27 @@ const DashboardPage = () => {
                           <div className={classes["col"]}>
                             <p>{`${cedi} ${order.total.toFixed(2)}`}</p>
                           </div>
-                          <div className={`${classes["col"]} ${classes["sm"]}`}>
-                            <p>{order.numberOfProducts}</p>
+                          <div
+                            className={`${classes["col"]} ${classes["last"]}`}
+                          >
+                            <p>{OrderStatus.State.text(order.status)}</p>
                           </div>
                           <div className={classes["col"]}>
-                            <p>
-                              {format(new Date(order.createdAt), "dd/MM/yyyy")}
-                            </p>
+                            {isSameDay(
+                              new Date(),
+                              new Date(order.createdAt)
+                            ) ? (
+                              <p>
+                                {format(new Date(order.createdAt), "hh:mm a")}
+                              </p>
+                            ) : (
+                              <p>
+                                {format(
+                                  new Date(order.createdAt),
+                                  "dd/MM/yyyy"
+                                )}
+                              </p>
+                            )}
                           </div>
                           <div
                             className={`${classes["col"]} ${classes["last"]}`}
@@ -269,9 +284,15 @@ const DashboardPage = () => {
                             <p>{user.deviceType}</p>
                           </div>
                           <div className={classes["col"]}>
-                            <p>
-                              {format(new Date(user.createdAt), "dd/MM/yyyy")}
-                            </p>
+                            {isSameDay(new Date(), new Date(user.createdAt)) ? (
+                              <p>
+                                {format(new Date(user.createdAt), "hh:mm a")}
+                              </p>
+                            ) : (
+                              <p>
+                                {format(new Date(user.createdAt), "dd/MM/yyyy")}
+                              </p>
+                            )}
                           </div>
                         </div>
                       );

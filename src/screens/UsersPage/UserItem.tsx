@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -66,8 +66,13 @@ const UserItem = (props: Props) => {
         <p>{props.user.deviceType}</p>
       </div>
       <div className={classes["col"]}>
-        <p>{format(new Date(props.user.createdAt), "dd/MM/yyyy")}</p>
+        {/* <p>{format(new Date(props.user.createdAt), "dd/MM/yyyy")}</p> */}
         {/* <p>{format(new Date(props.user.createdAt), "dd/MM/yyyy:hh:mm aa")}</p> */}
+        {isSameDay(new Date(), new Date(props.user.createdAt)) ? (
+          <p>{format(new Date(props.user.createdAt), "hh:mm a")}</p>
+        ) : (
+          <p>{format(new Date(props.user.createdAt), "dd/MM/yyyy")}</p>
+        )}
       </div>
       <div className={classes["actions"]}>
         <button
