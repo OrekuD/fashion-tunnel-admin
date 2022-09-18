@@ -7,7 +7,42 @@
   background-color: $lightpurple;
   display: flex;
   flex-direction: column;
-  padding: 0 2rem 4rem 2rem;
+  padding: 0 2rem 2rem 2rem;
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.5rem;
+    background-color: $white;
+    align-self: center;
+    border-radius: 12px;
+    margin-top: 1rem;
+
+    .dots {
+      margin: 0 0.25rem;
+    }
+
+    .button {
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 8px;
+      background-color: #fafcfe;
+      margin: 0 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0.5rem;
+
+      p {
+        font-size: 0.875rem;
+        color: $grey;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
 
   .title {
     font-weight: 400;
@@ -143,6 +178,16 @@
       }
       .header {
         margin: 1rem 1rem;
+      }
+    }
+
+    .pagination {
+      .dots {
+        margin: 0 0.5rem;
+      }
+
+      .button {
+        margin: 0 0.5rem;
       }
     }
   }

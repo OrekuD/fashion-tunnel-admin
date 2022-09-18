@@ -5,6 +5,9 @@ import { useSelectState } from "../../store/selectors";
 import RequestManager from "../../store/request-manager";
 import OrderItem from "./OrderItem";
 import ordersAsyncActions from "../../store/actions/orders.action";
+import orderAsyncActions from "../../store/actions/order.action";
+import { ChevronRightIcon } from "../../components/Icons";
+import colors from "../../constants/colors";
 
 const OrdersPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -36,6 +39,11 @@ const OrdersPage = () => {
       return;
     }
   }, [updatedAt, request.updatedAt]);
+
+  const fetchOrders = (page: number) => {
+    setIsLoading(true);
+    dispatch(ordersAsyncActions.index({ page, size: 25 }));
+  };
 
   return (
     <div className={classes["container"]}>
@@ -93,6 +101,102 @@ const OrdersPage = () => {
           </>
         )}
       </div>
+      {orders.list.length > 0 && (
+        <div className={classes["pagination"]}>
+          <button
+            className={classes["button"]}
+            disabled={orders.meta.currentPage === 1}
+            onClick={() =>
+              fetchOrders(
+                orders.meta.currentPage === 1 ? 1 : orders.meta.currentPage - 1
+              )
+            }
+          >
+            <ChevronRightIcon
+              width={24}
+              height={24}
+              color={colors.deepgrey}
+              style={{
+                transform: "rotate(180deg)",
+              }}
+            />
+          </button>
+          <button className={classes["button"]} onClick={() => fetchOrders(1)}>
+            <p
+              style={{
+                fontWeight: orders.meta.currentPage === 1 ? 600 : 400,
+                color:
+                  orders.meta.currentPage === 1 ? colors.deepgrey : undefined,
+              }}
+            >
+              1
+            </p>
+          </button>
+          {orders.meta.totalPages > 1 && (
+            <button
+              className={classes["button"]}
+              onClick={() => fetchOrders(2)}
+            >
+              <p
+                style={{
+                  fontWeight: orders.meta.currentPage === 2 ? 600 : 400,
+                  color:
+                    orders.meta.currentPage === 2 ? colors.deepgrey : undefined,
+                }}
+              >
+                2
+              </p>
+            </button>
+          )}
+          {orders.meta.currentPage > 2 &&
+            orders.meta.currentPage !== orders.meta.totalPages && (
+              <button
+                className={classes["button"]}
+                onClick={() => fetchOrders(orders.meta.currentPage)}
+              >
+                <p
+                  style={{
+                    fontWeight: 600,
+                    color: colors.deepgrey,
+                  }}
+                >
+                  {orders.meta.currentPage}
+                </p>
+              </button>
+            )}
+          {orders.meta.totalPages > 3 && <p className={classes["dots"]}>...</p>}
+
+          {orders.meta.totalPages > 3 && (
+            <button
+              className={classes["button"]}
+              onClick={() => fetchOrders(orders.meta.totalPages)}
+            >
+              <p
+                style={{
+                  fontWeight:
+                    orders.meta.currentPage === orders.meta.totalPages
+                      ? 600
+                      : 400,
+                  color:
+                    orders.meta.currentPage === orders.meta.totalPages
+                      ? colors.deepgrey
+                      : undefined,
+                }}
+              >
+                {orders.meta.totalPages}
+              </p>
+            </button>
+          )}
+
+          <button
+            className={classes["button"]}
+            disabled={orders.meta.nextPage === orders.meta.currentPage}
+            onClick={() => fetchOrders(orders.meta.nextPage)}
+          >
+            <ChevronRightIcon width={24} height={24} color={colors.deepgrey} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

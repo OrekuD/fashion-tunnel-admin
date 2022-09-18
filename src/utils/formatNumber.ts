@@ -1,4 +1,7 @@
 const formatNumber = (number: number) =>
-  number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  Number(number).toLocaleString("en", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
 export default formatNumber;

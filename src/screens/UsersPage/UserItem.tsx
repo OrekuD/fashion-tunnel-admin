@@ -66,15 +66,13 @@ const UserItem = (props: Props) => {
         <p>{props.user.deviceType}</p>
       </div>
       <div className={classes["col"]}>
-        {/* <p>{format(new Date(props.user.createdAt), "dd/MM/yyyy")}</p> */}
-        {/* <p>{format(new Date(props.user.createdAt), "dd/MM/yyyy:hh:mm aa")}</p> */}
         {isSameDay(new Date(), new Date(props.user.createdAt)) ? (
           <p>{format(new Date(props.user.createdAt), "hh:mm a")}</p>
         ) : (
           <p>{format(new Date(props.user.createdAt), "dd/MM/yyyy")}</p>
         )}
       </div>
-      <div className={classes["actions"]}>
+      {/* <div className={classes["actions"]}>
         <button
           className={classes["button"]}
           onClick={(e) => {
@@ -100,7 +98,7 @@ const UserItem = (props: Props) => {
             <TrashIcon width={18} height={18} color={colors.white} />
           )}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -89,16 +89,18 @@ const DashboardPage = () => {
           <div className={classes["wrapper"]}>
             <div className={classes["second-wrapper"]}>
               <p className={classes["title"]}>Available balance</p>
-              <p
-                className={classes["amount"]}
-              >{`${cedi} ${summary?.income?.toFixed(2)}`}</p>
+              <p className={classes["amount"]}>{`${cedi} ${formatNumber(
+                summary?.income
+              )}`}</p>
             </div>
             <div className={classes["third-wrapper"]}>
               <p className={classes["title"]}>Customers</p>
               <p className={classes["amount"]}>
                 {formatNumber(summary?.customers)}
               </p>
-              <p className={classes["title"]}>Orders</p>
+              <p className={classes["title"]} style={{ marginTop: 24 }}>
+                Orders
+              </p>
               <p className={classes["amount"]}>
                 {formatNumber(summary?.orders)}
               </p>

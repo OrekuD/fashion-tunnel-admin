@@ -41,7 +41,7 @@ const ProductsPage = () => {
     }
   }, [updatedAt, request.updatedAt]);
 
-  const fetchUsers = (page: number) => {
+  const fetchProducts = (page: number) => {
     setIsLoading(true);
     dispatch(productsAsyncActions.index({ page, size: 25 }));
   };
@@ -114,7 +114,7 @@ const ProductsPage = () => {
             className={classes["button"]}
             disabled={products.meta.currentPage === 1}
             onClick={() =>
-              fetchUsers(
+              fetchProducts(
                 products.meta.currentPage === 1
                   ? 1
                   : products.meta.currentPage - 1
@@ -130,7 +130,10 @@ const ProductsPage = () => {
               }}
             />
           </button>
-          <button className={classes["button"]} onClick={() => fetchUsers(1)}>
+          <button
+            className={classes["button"]}
+            onClick={() => fetchProducts(1)}
+          >
             <p
               style={{
                 fontWeight: products.meta.currentPage === 1 ? 600 : 400,
@@ -142,7 +145,10 @@ const ProductsPage = () => {
             </p>
           </button>
           {products.meta.totalPages > 1 && (
-            <button className={classes["button"]} onClick={() => fetchUsers(2)}>
+            <button
+              className={classes["button"]}
+              onClick={() => fetchProducts(2)}
+            >
               <p
                 style={{
                   fontWeight: products.meta.currentPage === 2 ? 600 : 400,
@@ -160,7 +166,7 @@ const ProductsPage = () => {
             products.meta.currentPage !== products.meta.totalPages && (
               <button
                 className={classes["button"]}
-                onClick={() => fetchUsers(products.meta.currentPage)}
+                onClick={() => fetchProducts(products.meta.currentPage)}
               >
                 <p
                   style={{
@@ -178,7 +184,7 @@ const ProductsPage = () => {
           {products.meta.totalPages > 3 && (
             <button
               className={classes["button"]}
-              onClick={() => fetchUsers(products.meta.totalPages)}
+              onClick={() => fetchProducts(products.meta.totalPages)}
             >
               <p
                 style={{
@@ -200,7 +206,7 @@ const ProductsPage = () => {
             className={classes["button"]}
             disabled={products.meta.nextPage === products.meta.currentPage}
             onClick={() => {
-              fetchUsers(products.meta.nextPage);
+              fetchProducts(products.meta.nextPage);
             }}
           >
             <ChevronRightIcon width={24} height={24} color={colors.deepgrey} />

@@ -14,7 +14,7 @@ const UsersPage = () => {
   const [isScrollTop, setIsScrollTop] = React.useState(true);
   const [isDeleting, setIsDeleting] = React.useState(false);
   const dispatch = useDispatch();
-  const { request, products, users } = useSelectState();
+  const { request, users } = useSelectState();
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -84,9 +84,9 @@ const UsersPage = () => {
           <div className={classes["col"]}>
             <p>Joined on</p>
           </div>
-          <div className={classes["actions"]}>
+          {/* <div className={classes["actions"]}>
             <p>Actions</p>
-          </div>
+          </div> */}
         </div>
         {users.list.length === 0 ? (
           <div className={classes["no-users"]}>
@@ -161,23 +161,29 @@ const UsersPage = () => {
               </button>
             )}
           {users.meta.totalPages > 3 && <p className={classes["dots"]}>...</p>}
-          <button
-            className={classes["button"]}
-            onClick={() => fetchUsers(users.meta.totalPages)}
-          >
-            <p
-              style={{
-                fontWeight:
-                  users.meta.currentPage === users.meta.totalPages ? 600 : 400,
-                color:
-                  users.meta.currentPage === users.meta.totalPages
-                    ? colors.deepgrey
-                    : undefined,
-              }}
+
+          {users.meta.totalPages > 3 && (
+            <button
+              className={classes["button"]}
+              onClick={() => fetchUsers(users.meta.totalPages)}
             >
-              {users.meta.totalPages}
-            </p>
-          </button>
+              <p
+                style={{
+                  fontWeight:
+                    users.meta.currentPage === users.meta.totalPages
+                      ? 600
+                      : 400,
+                  color:
+                    users.meta.currentPage === users.meta.totalPages
+                      ? colors.deepgrey
+                      : undefined,
+                }}
+              >
+                {users.meta.totalPages}
+              </p>
+            </button>
+          )}
+
           <button
             className={classes["button"]}
             disabled={users.meta.nextPage === users.meta.currentPage}
