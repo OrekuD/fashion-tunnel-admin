@@ -1,3 +1,4 @@
+import format from "date-fns/format";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -45,8 +46,31 @@ const UserPage = () => {
 
   return (
     <div className={classes["container"]}>
-      <p className={classes["title"]}>User page</p>
-      <p>{user.user.email}</p>
+      <div className={classes["content"]}>
+        <p className={classes["title"]}>User details</p>
+        <div className={classes["section"]}>
+          <p className={classes["label"]}>First name</p>
+          <p className={classes["value"]}>{user.user.firstname}</p>
+        </div>
+        <div className={classes["section"]}>
+          <p className={classes["label"]}>Last name</p>
+          <p className={classes["value"]}>{user.user.lastname}</p>
+        </div>
+        <div className={classes["section"]}>
+          <p className={classes["label"]}>E-mail</p>
+          <p className={classes["value"]}>{user.user.email}</p>
+        </div>
+        <div className={classes["section"]}>
+          <p className={classes["label"]}>Device type</p>
+          <p className={classes["value"]}>{user.user.deviceType}</p>
+        </div>
+        <div className={classes["section"]}>
+          <p className={classes["label"]}>Created on</p>
+          <p className={classes["value"]}>
+            {format(new Date(user.user.createdAt), "dd/MM/yyyy - hh:mm a")}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

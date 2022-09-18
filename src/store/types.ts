@@ -21,10 +21,19 @@ export interface UploadState {
 
 export interface ProductsState {
   list: Array<Product>;
+  meta: PaginatedMeta;
+}
+
+export interface PaginatedMeta {
+  totalPages: number;
+  currentPage: number;
+  nextPage: number;
+  pageSize: number;
 }
 
 export interface OrdersState {
   list: Array<SimpleOrder>;
+  meta: PaginatedMeta;
 }
 
 export interface IncomeState {
@@ -39,6 +48,7 @@ export interface SummaryState {
 
 export interface UsersState {
   list: Array<User>;
+  meta: PaginatedMeta;
 }
 
 export interface OrderState {

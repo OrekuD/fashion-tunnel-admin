@@ -13,6 +13,7 @@ import classes from "./index.module.scss";
 import ordersAsyncActions from "../../store/actions/orders.action";
 import usersAsyncActions from "../../store/actions/users.action";
 import summaryAsyncActions from "../../store/actions/summary.action";
+import formatNumber from "../../utils/formatNumber";
 
 const DashboardPage = () => {
   const { request, orders, users, summary } = useSelectState();
@@ -25,7 +26,7 @@ const DashboardPage = () => {
   React.useEffect(() => {
     dispatch(summaryAsyncActions.index());
     dispatch(ordersAsyncActions.index());
-    dispatch(usersAsyncActions.index());
+    dispatch(usersAsyncActions.index({ page: 1, size: 25 }));
   }, []);
 
   const [updatedAt] = React.useState(request.updatedAt);
@@ -93,9 +94,13 @@ const DashboardPage = () => {
             </div>
             <div className={classes["third-wrapper"]}>
               <p className={classes["title"]}>Customers</p>
-              <p className={classes["amount"]}>{summary?.customers}</p>
+              <p className={classes["amount"]}>
+                {formatNumber(summary?.customers)}
+              </p>
               <p className={classes["title"]}>Orders</p>
-              <p className={classes["amount"]}>{summary?.orders}</p>
+              <p className={classes["amount"]}>
+                {formatNumber(summary?.orders)}
+              </p>
             </div>
           </div>
         </div>

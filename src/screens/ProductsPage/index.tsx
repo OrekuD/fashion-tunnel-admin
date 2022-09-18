@@ -96,9 +96,17 @@ const ProductsPage = () => {
             <p>Actions</p>
           </div>
         </div>
-        {products.list.map((product) => (
-          <ProductItem product={product} key={product.id} />
-        ))}
+        {products.list.length === 0 ? (
+          <div className={classes["no-orders"]}>
+            <p>You have no products</p>
+          </div>
+        ) : (
+          <>
+            {products.list.map((product) => (
+              <ProductItem product={product} key={product.id} />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

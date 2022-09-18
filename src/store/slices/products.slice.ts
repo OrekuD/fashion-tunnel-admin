@@ -8,6 +8,12 @@ import OkResponse from "../../network/responses/OkResponse";
 
 const initialState: ProductsState = {
   list: [],
+  meta: {
+    currentPage: -1,
+    nextPage: -1,
+    totalPages: -1,
+    pageSize: -1,
+  },
 };
 
 const slice = createSlice({

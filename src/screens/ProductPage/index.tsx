@@ -66,7 +66,7 @@ const ProductPage = () => {
   return (
     <div className={classes["container"]}>
       <div className={classes["content"]}>
-        <p className={classes["title"]}>Product page</p>
+        <p className={classes["title"]}>Product details</p>
 
         <div className={classes["section"]}>
           <p className={classes["label"]}>Product name</p>
@@ -117,16 +117,18 @@ const ProductPage = () => {
         </div>
         <div className={classes["section"]}>
           <p className={classes["label"]}>Extra info</p>
-          {Array(5)
-            .fill("9")
-            .map((p, index) => (
-              <div className={classes["row"]} key={index}>
-                <div className={classes["dot"]} />
-                <p className={classes["value"]}>
-                  {product?.product?.description}
-                </p>
-              </div>
-            ))}
+          {product.product.extraInfo.length === 0 ? (
+            <p className={classes["value"]}>-</p>
+          ) : (
+            <>
+              {product.product.extraInfo.map((info, index) => (
+                <div className={classes["row"]} key={index}>
+                  <div className={classes["dot"]} />
+                  <p className={classes["value"]}>{info}</p>
+                </div>
+              ))}
+            </>
+          )}
         </div>
         <div className={classes["section"]}>
           <p className={classes["label"]}>Actions</p>

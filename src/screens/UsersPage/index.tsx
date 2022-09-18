@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import RequestManager from "../../store/request-manager";
 import usersAsyncActions from "../../store/actions/users.action";
 import UserItem from "./UserItem";
+import { ChevronRightIcon } from "../../components/Icons";
+import colors from "../../constants/colors";
 
 const UsersPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -16,7 +18,7 @@ const UsersPage = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    dispatch(usersAsyncActions.index());
+    dispatch(usersAsyncActions.index({ page: 1, size: 25 }));
   }, []);
 
   const [updatedAt] = React.useState(request.updatedAt);
@@ -39,6 +41,11 @@ const UsersPage = () => {
       return;
     }
   }, [updatedAt, request.updatedAt]);
+
+  const fetchUsers = (page: number) => {
+    setIsLoading(true);
+    dispatch(usersAsyncActions.index({ page, size: 25 }));
+  };
 
   return (
     <div className={classes["container"]}>
@@ -81,10 +88,83 @@ const UsersPage = () => {
             <p>Actions</p>
           </div>
         </div>
-        {users.list.map((user, index) => (
-          <UserItem key={index} user={user} />
-        ))}
+        {users.list.length === 0 ? (
+          <div className={classes["no-orders"]}>
+            <p>You have no users</p>
+          </div>
+        ) : (
+          <>
+            {users.list.map((user, index) => (
+              <UserItem key={index} user={user} />
+            ))}
+          </>
+        )}
       </div>
+      {users.list.length > 0 && (
+        <div className={classes["pagination"]}>
+          <button
+            className={classes["button"]}
+            disabled={users.meta.currentPage === 1}
+            onClick={() =>
+              fetchUsers(
+                users.meta.currentPage === 1 ? 1 : users.meta.currentPage - 1
+              )
+            }
+          >
+            <ChevronRightIcon
+              width={24}
+              height={24}
+              color={colors.deepgrey}
+              style={{
+                transform: "rotate(180deg)",
+              }}
+            />
+          </button>
+          <button className={classes["button"]} onClick={() => fetchUsers(1)}>
+            <p
+              style={{
+                fontWeight: users.meta.currentPage === 1 ? 600 : 400,
+                color:
+                  users.meta.currentPage === 1 ? colors.deepgrey : undefined,
+              }}
+            >
+              1
+            </p>
+          </button>
+          <button className={classes["button"]}>
+            <p>2</p>
+          </button>
+          <button className={classes["button"]}>
+            <p>3</p>
+          </button>
+
+          <p className={classes["dots"]}>...</p>
+          <button
+            className={classes["button"]}
+            onClick={() => fetchUsers(users.meta.totalPages)}
+          >
+            <p
+              style={{
+                fontWeight:
+                  users.meta.currentPage === users.meta.totalPages ? 600 : 400,
+                color:
+                  users.meta.currentPage === users.meta.totalPages
+                    ? colors.deepgrey
+                    : undefined,
+              }}
+            >
+              {users.meta.totalPages}
+            </p>
+          </button>
+          <button
+            className={classes["button"]}
+            disabled={users.meta.nextPage === users.meta.currentPage}
+            onClick={() => fetchUsers(users.meta.nextPage)}
+          >
+            <ChevronRightIcon width={24} height={24} color={colors.deepgrey} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

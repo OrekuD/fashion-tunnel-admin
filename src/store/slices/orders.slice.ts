@@ -10,6 +10,12 @@ import UpdateOrderStatusResponse from "../../network/responses/UpdateOrderStatus
 
 const initialState: OrdersState = {
   list: [],
+  meta: {
+    currentPage: -1,
+    nextPage: -1,
+    totalPages: -1,
+    pageSize: -1,
+  },
 };
 
 const slice = createSlice({

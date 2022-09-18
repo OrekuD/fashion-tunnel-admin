@@ -61,7 +61,7 @@
     .images {
       display: flex;
       flex-wrap: wrap;
-      margin-top: 0.5rem;
+      margin-top: 0.75rem;
 
       .image {
         object-fit: contain;
@@ -109,7 +109,7 @@
     padding: 1.5rem;
 
     .section {
-      width: 50%;
+      width: 70%;
     }
   }
 
@@ -117,7 +117,7 @@
     padding: 2rem 2rem;
 
     .section {
-      width: 35%;
+      width: 50%;
     }
   }
 }

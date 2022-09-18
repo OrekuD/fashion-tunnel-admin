@@ -85,9 +85,17 @@ const OrdersPage = () => {
             <p>Actions</p>
           </div>
         </div>
-        {orders.list.map((order) => (
-          <OrderItem order={order} key={order.id} />
-        ))}
+        {orders.list.length === 0 ? (
+          <div className={classes["no-orders"]}>
+            <p>You have no orders</p>
+          </div>
+        ) : (
+          <>
+            {orders.list.map((order) => (
+              <OrderItem order={order} key={order.id} />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

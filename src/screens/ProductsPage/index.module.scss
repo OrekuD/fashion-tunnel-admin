@@ -9,6 +9,14 @@
   flex-direction: column;
   padding: 0 2rem 4rem 2rem;
 
+  .no-orders {
+    margin-top: 5rem;
+
+    p {
+      text-align: center;
+    }
+  }
+
   .title-header {
     margin-bottom: 2rem;
     margin-top: 3.5rem;
