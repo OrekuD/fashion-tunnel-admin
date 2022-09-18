@@ -2,6 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import API from "../../constants/api";
 import Product from "../../models/Product";
+import CreateProductRequest from "../../network/requests/CreateProductRequest";
+import UpdateProductRequest from "../../network/requests/UpdateProductRequest";
 import OkResponse from "../../network/responses/OkResponse";
 import { requestActions } from "../slices/request.slice";
 
@@ -61,10 +63,60 @@ const deleteProduct = createAsyncThunk(
   }
 );
 
+const createProduct = createAsyncThunk(
+  "products/create",
+  async (payload: CreateProductRequest, thunkApi) => {
+    thunkApi.dispatch(requestActions.started(createProduct.typePrefix));
+    try {
+      const response = await API.client.post<
+        CreateProductRequest,
+        AxiosResponse<Product>
+      >(`/admin/products`, payload);
+      thunkApi.dispatch(
+        requestActions.beforeFulfilled(createProduct.typePrefix)
+      );
+
+      return response.data;
+    } catch (error) {
+      thunkApi.dispatch(
+        requestActions.beforeRejected(createProduct.typePrefix)
+      );
+      return thunkApi.rejectWithValue({ error });
+    }
+  }
+);
+
+const updateProduct = createAsyncThunk(
+  "products/update",
+  async (payload: UpdateProductRequest, thunkApi) => {
+    thunkApi.dispatch(requestActions.started(updateProduct.typePrefix));
+    const { id, ...body } = payload;
+
+    try {
+      const response = await API.client.put<
+        UpdateProductRequest,
+        AxiosResponse<Product>
+      >(`/admin/products/${id}`, body);
+      thunkApi.dispatch(
+        requestActions.beforeFulfilled(updateProduct.typePrefix)
+      );
+
+      return response.data;
+    } catch (error) {
+      thunkApi.dispatch(
+        requestActions.beforeRejected(updateProduct.typePrefix)
+      );
+      return thunkApi.rejectWithValue({ error });
+    }
+  }
+);
+
 const productsAsyncActions = {
   index,
   getProduct,
   deleteProduct,
+  createProduct,
+  updateProduct,
 };
 
 export default productsAsyncActions;

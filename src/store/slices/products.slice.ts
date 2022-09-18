@@ -27,12 +27,30 @@ const slice = createSlice({
     [productsAsyncActions.index.rejected.type]: (_, action: CPA<any>) => {
       postErrorRequest(action, action, initialState);
     },
-    [productsAsyncActions.getProduct.fulfilled.type]: (
+    [productsAsyncActions.createProduct.fulfilled.type]: (
       state,
       action: CPA<Product>
     ) => {
       state.list.unshift(action.payload);
       postRequest(action);
+    },
+    [productsAsyncActions.createProduct.rejected.type]: (
+      _,
+      action: CPA<any>
+    ) => {
+      postErrorRequest(action, action, initialState);
+    },
+    [productsAsyncActions.getProduct.fulfilled.type]: (
+      state,
+      action: CPA<Product>
+    ) => {
+      const productIndex = state.list.findIndex(
+        ({ id }) => id === action.payload.id
+      );
+      if (productIndex < 0) {
+        state.list.unshift(action.payload);
+        return;
+      }
     },
     [productsAsyncActions.getProduct.rejected.type]: (_, action: CPA<any>) => {
       postErrorRequest(action, action, initialState);
@@ -45,12 +63,33 @@ const slice = createSlice({
         ({ id }) => id === action.payload.productId
       );
       if (productIndex < 0) {
+        postRequest(action);
         return;
       }
       state.list.splice(productIndex, 1);
       postRequest(action);
     },
     [productsAsyncActions.deleteProduct.rejected.type]: (
+      _,
+      action: CPA<any>
+    ) => {
+      postErrorRequest(action, action, initialState);
+    },
+    [productsAsyncActions.updateProduct.fulfilled.type]: (
+      state,
+      action: CPA<Product>
+    ) => {
+      const productIndex = state.list.findIndex(
+        ({ id }) => id === action.payload.id
+      );
+      if (productIndex < 0) {
+        postRequest(action);
+        return;
+      }
+      state.list.splice(productIndex, 1, action.payload);
+      postRequest(action);
+    },
+    [productsAsyncActions.updateProduct.rejected.type]: (
       _,
       action: CPA<any>
     ) => {

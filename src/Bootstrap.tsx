@@ -15,6 +15,7 @@ const Bootstrap = () => {
 
     start();
   }, []);
+
   if (!store) {
     return <></>;
   }

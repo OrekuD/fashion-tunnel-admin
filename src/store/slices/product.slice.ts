@@ -30,6 +30,16 @@ const slice = createSlice({
       state.product = null;
       postErrorRequest(action, action, initialState);
     },
+    [productsAsyncActions.updateProduct.fulfilled.type]: (
+      state,
+      action: CPA<Product>
+    ) => {
+      const isProduct = state.product?.id === action.payload.id;
+      if (isProduct) {
+        state.product = action.payload;
+        return;
+      }
+    },
   },
 });
 

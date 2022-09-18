@@ -4,27 +4,57 @@ import classes from "./index.module.scss";
 interface Props {
   placeholder: string;
   value: string;
-  onChange: (value: string) => void;
-  onBlur?: () => void;
+  onChange: React.Dispatch<React.SetStateAction<string>>;
   type?: React.HTMLInputTypeAttribute;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   error?: string;
+  rounded?: boolean;
+  label?: string;
+  textArea?: boolean;
 }
 
 const TextInput = (props: Props) => {
+  if (props.rounded) {
+    return (
+      <div className={classes["container-wrapper"]}>
+        <div className={classes["rounded-text-input-container"]}>
+          {props.leftIcon}
+          <input
+            className={classes["text-input"]}
+            placeholder={props.placeholder}
+            value={props.value}
+            onChange={(e) => props.onChange(e.target.value)}
+            type={props.type}
+          />
+          {props.rightIcon}
+        </div>
+        {props.error && <p className={classes["error"]}>{props.error}</p>}
+      </div>
+    );
+  }
+
   return (
     <div className={classes["container-wrapper"]}>
+      <p className={classes["label"]}>{props.label}</p>
       <div className={classes["text-input-container"]}>
-        {props.leftIcon}
-        <input
-          className={classes["text-input"]}
-          placeholder={props.placeholder}
-          value={props.value}
-          onChange={(e) => props.onChange(e.target.value)}
-          type={props.type}
-          onBlur={props.onBlur}
-        />
+        {props?.textArea ? (
+          <textarea
+            className={classes["text-area"]}
+            placeholder={props.placeholder}
+            value={props.value}
+            onChange={(e) => props.onChange(e.target.value)}
+            draggable={false}
+          />
+        ) : (
+          <input
+            className={classes["text-input"]}
+            placeholder={props.placeholder}
+            value={props.value}
+            onChange={(e) => props.onChange(e.target.value)}
+            type={props.type}
+          />
+        )}
         {props.rightIcon}
       </div>
       {props.error && <p className={classes["error"]}>{props.error}</p>}

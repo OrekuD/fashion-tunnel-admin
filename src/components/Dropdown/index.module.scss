@@ -1,0 +1,72 @@
+@import "../../scss/colors.scss";
+@import "../../scss/breakpoints.scss";
+
+.container-wrapper {
+  width: 100%;
+  // margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+
+  .label {
+    font-size: 1rem;
+    color: $deepgrey;
+  }
+
+  .placeholder {
+    font-size: 1rem;
+    color: rgba(128, 128, 128, 0.7);
+  }
+
+  .error {
+    font-size: 0.875rem;
+    margin: 0.2rem 0 0 0.2rem;
+    color: $error;
+  }
+
+  .container {
+    height: 48px;
+    min-height: 48px;
+    width: 100%;
+    cursor: pointer;
+    border-bottom: 1px solid $darkgrey;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+      transform: rotate(90deg);
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    left: 0;
+    top: 84px;
+    z-index: 10;
+    border-radius: 8px;
+    max-height: 220px;
+    overflow-y: scroll;
+    width: 100%;
+    padding: 0.5rem;
+    background-color: $white;
+
+    p {
+      font-size: 0.875rem;
+      color: $deepgrey;
+      padding: 1rem 1rem;
+      background-color: $white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+      margin-bottom: 0.5rem;
+
+      &:hover {
+        background-color: #f8f9fc;
+      }
+    }
+  }
+
+  @include md {
+    width: 350px;
+  }
+}

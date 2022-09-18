@@ -4,18 +4,21 @@ import classes from "./index.module.scss";
 import API from "../../constants/api";
 import { useDispatch } from "react-redux";
 import { useSelectState } from "../../store/selectors";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import productsAsyncActions from "../../store/actions/products.action";
 import RequestManager from "../../store/request-manager";
 import ProductGender from "../../namespace/ProductGender";
 import { cedi } from "../../constants";
 import ProductCategories from "../../namespace/ProductCategories";
 import ProductItem from "./ProductItem";
+import { PlusIcon } from "../../components/Icons";
+import colors from "../../constants/colors";
 
 const ProductsPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isScrollTop, setIsScrollTop] = React.useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { request, products } = useSelectState();
 
   React.useEffect(() => {
@@ -45,7 +48,16 @@ const ProductsPage = () => {
 
   return (
     <div className={classes["container"]}>
-      <p className={classes["title"]}>Products</p>
+      <div className={classes["title-header"]}>
+        <p className={classes["title"]}>Products</p>
+        <button
+          className={classes["create-button"]}
+          onClick={() => navigate("/products/create")}
+        >
+          <PlusIcon width={24} height={24} color={colors.white} />
+          <p>Create new product</p>
+        </button>
+      </div>
       <div
         className={classes["list"]}
         onScroll={(e) => {

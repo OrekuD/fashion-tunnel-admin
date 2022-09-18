@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelectState } from "./store/selectors";
 import SignInPage from "./screens/SignInPage";
@@ -12,9 +13,43 @@ import OrdersPage from "./screens/OrdersPage";
 import ProductPage from "./screens/ProductPage";
 import OrderPage from "./screens/OrderPage";
 import UserPage from "./screens/UserPage";
+import CreateProductPage from "./screens/CreateProductPage";
+import { useDispatch } from "react-redux";
+import API from "./constants/api";
+import { AxiosResponse } from "axios";
+import authenticationAsyncActions from "./store/actions/authentication.action";
 
 const App = () => {
   const { authentication } = useSelectState();
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    const launch = async () => {
+      API.client.interceptors.response.use(
+        (response: AxiosResponse<any>): AxiosResponse<any> => response,
+        (error: any) => {
+          if (error.response) {
+            if (error.response.status === 403) {
+              dispatch(authenticationAsyncActions.signout());
+            }
+          } else if (error.status) {
+            if (error.status === 403) {
+              dispatch(authenticationAsyncActions.signout());
+            }
+          }
+
+          return Promise.reject(error);
+        }
+      );
+
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        API.addAccessToken(accessToken);
+      }
+    };
+
+    launch();
+  }, []);
 
   return (
     <div className={"app-main-container"}>
@@ -31,6 +66,7 @@ const App = () => {
                 path="products/:productId/edit"
                 element={<EditProductPage />}
               />
+              <Route path="products/create" element={<CreateProductPage />} />
               <Route path="products/:productId" element={<ProductPage />} />
               <Route path="orders/:orderId" element={<OrderPage />} />
               <Route path="users/:userId" element={<UserPage />} />

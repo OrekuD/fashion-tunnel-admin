@@ -9,7 +9,7 @@ export default interface Product {
   description: string;
   price: number;
   productQuantity: number;
-  extraInfo: string;
+  extraInfo: Array<string>;
   gender: ProductGender.Status;
   productCategory: ProductCategories.Status;
   sizeType: SizeType;

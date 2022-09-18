@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, TextInput } from "../../components";
 import Dropdown from "../../components/Dropdown";
 import { PlusIcon } from "../../components/Icons";
@@ -17,11 +17,7 @@ import isAnyEmpty from "../../utils/isAnyEmpty";
 import toNumber from "../../utils/toNumber";
 import classes from "./index.module.scss";
 
-const EditProductPage = () => {
-  const { productId } = useParams<{ productId: string }>();
-  const { request, upload, product } = useSelectState();
-
-  const [isFetching, setIsFetching] = React.useState(true);
+const CreateProductPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isUploading, setIsUploading] = React.useState(false);
   const [gender, setGender] = React.useState<ProductGender.Status>(
@@ -35,6 +31,8 @@ const EditProductPage = () => {
   const [productQuantity, setProductQuantity] = React.useState("");
   const [extraInfo, setExtraInfo] = React.useState<Array<string>>([]);
   const [description, setDescription] = React.useState("");
+  const [productImages, setProductImages] = React.useState<FileList>();
+  const [productImage, setProductImage] = React.useState<File>();
   const [showGenderDropdown, setShowGenderDropdown] = React.useState(false);
   const [showSizeTypeDropdown, setShowSizeTypeDropdown] = React.useState(false);
   const [showProductCategoryDropdown, setShowProductCategoryDropdown] =
@@ -42,6 +40,7 @@ const EditProductPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { request, upload } = useSelectState();
   const [updatedAt] = React.useState(request.updatedAt);
 
   React.useEffect(() => {
@@ -50,48 +49,64 @@ const EditProductPage = () => {
     }
     const RM = new RequestManager(request, dispatch);
 
-    if (RM.isFulfilled(productsAsyncActions.updateProduct.typePrefix)) {
-      RM.consume(productsAsyncActions.updateProduct.typePrefix);
+    if (RM.isFulfilled(productsAsyncActions.createProduct.typePrefix)) {
+      RM.consume(productsAsyncActions.createProduct.typePrefix);
+      setIsLoading(false);
+      setGender(ProductGender.Status.UNISEX);
+      setProductCategory(undefined);
+      setSizeType(undefined);
+      setPrice("");
+      setName("");
+      setProductQuantity("");
+      setExtraInfo([]);
+      setDescription("");
+      setProductImage(undefined);
+      setProductImages(undefined);
+      navigate(-1);
+      return;
+    }
+
+    if (RM.isRejected(productsAsyncActions.createProduct.typePrefix)) {
+      RM.consume(productsAsyncActions.createProduct.typePrefix);
       setIsLoading(false);
       return;
     }
+    if (RM.isFulfilled(uploadAsyncActions.index.typePrefix)) {
+      RM.consume(uploadAsyncActions.index.typePrefix);
+      setIsUploading(false);
 
-    if (RM.isRejected(productsAsyncActions.updateProduct.typePrefix)) {
-      RM.consume(productsAsyncActions.updateProduct.typePrefix);
+      const payload: CreateProductRequest = {
+        description,
+        extraInfo,
+        gender,
+        images: upload.images,
+        name,
+        price: toNumber(price),
+        productCategory: productCategory!,
+        productQuantity,
+        sizeType: sizeType!,
+      };
+      dispatch(productsAsyncActions.createProduct(payload));
+      return;
+    }
+
+    if (RM.isRejected(uploadAsyncActions.index.typePrefix)) {
+      RM.consume(uploadAsyncActions.index.typePrefix);
+      setIsUploading(false);
       setIsLoading(false);
-      return;
-    }
 
-    if (RM.isFulfilled(productsAsyncActions.getProduct.typePrefix)) {
-      RM.consume(productsAsyncActions.getProduct.typePrefix);
-      if (product?.product) {
-        setGender(product.product.gender);
-        setProductCategory(product.product.productCategory);
-        setSizeType(product.product.sizeType);
-        setPrice(product.product.price.toString());
-        setName(product.product.name);
-        setProductQuantity(product.product.productQuantity.toString());
-        setExtraInfo(product.product.extraInfo);
-        setDescription(product.product.description);
-      }
-      setIsFetching(false);
-      return;
-    }
-
-    if (RM.isRejected(productsAsyncActions.getProduct.typePrefix)) {
-      RM.consume(productsAsyncActions.getProduct.typePrefix);
-      setIsFetching(false);
       return;
     }
   }, [updatedAt, request.updatedAt]);
 
-  React.useEffect(() => {
-    if (!productId) return;
-    dispatch(productsAsyncActions.getProduct(productId));
-  }, [productId]);
-
   const canProceed = React.useMemo(() => {
-    if (typeof productCategory === undefined || typeof sizeType === undefined) {
+    if (
+      typeof productCategory === undefined ||
+      typeof sizeType === undefined ||
+      !productImage ||
+      // extraInfo.length === 0 ||
+      !productImages
+    ) {
       return false;
     }
     return !isAnyEmpty([name, price, productQuantity]);
@@ -101,49 +116,110 @@ const EditProductPage = () => {
     productQuantity,
     productCategory,
     sizeType,
+    productImage,
     // extraInfo,
+    productImages,
   ]);
+
+  const handleSubmit = async () => {
+    if (!canProceed || isLoading || isUploading) {
+      return;
+    }
+    setIsUploading(true);
+    setIsLoading(true);
+    if (!productImage || !productImages) {
+      return;
+    }
+    const images = [productImage, ...Array.from(productImages)];
+
+    const formData = new FormData();
+    for (const image of images) {
+      formData.append("images", image!);
+    }
+
+    dispatch(uploadAsyncActions.index(formData));
+  };
+
+  const previewProductImage = React.useMemo(() => {
+    if (!productImage) return null;
+    return URL.createObjectURL(productImage);
+  }, [productImage]);
+
+  const previewProductImages = React.useMemo(() => {
+    if (!productImages) return [];
+
+    return Array.from(productImages).map((productImage) =>
+      URL.createObjectURL(productImage)
+    );
+    // return URL.createObjectURL(productImage);
+  }, [productImages]);
 
   const sizeTypes: Array<SizeType> = React.useMemo(() => ["cloth", "shoe"], []);
 
-  if (isFetching) return <p>Fetching ....</p>;
-
-  if (!product?.product?.id) return <p>No product found bro ....</p>;
-
-  const handleSubmit = async () => {
-    if (!canProceed || isLoading || !product.product) {
-      return;
-    }
-    setIsLoading(true);
-
-    dispatch(
-      productsAsyncActions.updateProduct({
-        id: product.product.id,
-        description,
-        extraInfo,
-        gender,
-        name,
-        price: toNumber(price),
-        productCategory: productCategory!,
-        productQuantity,
-        sizeType: sizeType!,
-      })
-    );
-  };
-
   return (
     <div className={classes["container"]}>
-      <p className={classes["title"]}>Edit product</p>
+      <p className={classes["title"]}>Add new product</p>
       <div className={classes["content"]}>
-        <div className={classes["row"]}>
-          {product.product.images.map((url) => (
+        <div className={classes["upload-section"]}>
+          <div className={classes["row"]}>
+            <label htmlFor="product-image">
+              <div className={classes["upload-button"]}>
+                <PlusIcon width={24} height={24} color={colors.darkgrey} />
+              </div>
+              <p className={classes["label"]}>Main image</p>
+            </label>
+            <input
+              type="file"
+              id="product-image"
+              accept="image/png, image/gif, image/jpeg, image/webp"
+              maxLength={1}
+              className={classes["upload-file"]}
+              onChange={(e) => {
+                if (e.target?.files) {
+                  setProductImage(e.target.files[0]);
+                }
+              }}
+            />
+          </div>
+          {previewProductImage && (
             <img
-              src={url}
-              key={url}
+              src={previewProductImage}
               alt="preview-product-image"
               className={classes["preview-product-image"]}
             />
-          ))}
+          )}
+          <div className={classes["row"]} style={{ marginTop: 24 }}>
+            <label htmlFor="product-images">
+              <div className={classes["upload-button"]}>
+                <PlusIcon width={24} height={24} color={colors.darkgrey} />
+              </div>
+              <p className={classes["label"]}>Other images</p>
+            </label>
+            <input
+              type="file"
+              id="product-images"
+              accept="image/png, image/gif, image/jpeg, image/webp"
+              className={classes["upload-file"]}
+              multiple
+              onChange={(e) => {
+                if (e.target?.files) {
+                  setProductImages(e.target.files);
+                }
+              }}
+            />
+          </div>
+          {previewProductImages.length > 0 && (
+            <>
+              {previewProductImages.map((file) => (
+                <img
+                  src={file}
+                  key={file}
+                  alt="preview-product-image"
+                  className={classes["preview-product-image"]}
+                />
+              ))}
+            </>
+          )}
         </div>
         <div className={classes["inputs"]}>
           <TextInput
@@ -221,13 +297,13 @@ const EditProductPage = () => {
         </div>
       </div>
       <Button
-        label="Update"
+        label="create"
         onClick={handleSubmit}
-        isDisabled={!canProceed || isLoading}
+        isDisabled={!canProceed || isLoading || isUploading}
         isLoading={isLoading}
       />
     </div>
   );
 };
 
-export default EditProductPage;
+export default CreateProductPage;

@@ -5,27 +5,25 @@ import { useNavigate } from "react-router-dom";
 import { FilterIcon } from "../../components/Icons";
 import { cedi } from "../../constants";
 import colors from "../../constants/colors";
-import incomeAsyncActions from "../../store/actions/income.action";
 import RequestManager from "../../store/request-manager";
 import { useSelectState } from "../../store/selectors";
 import formatOrderNumber from "../../utils/formatOrderNumber";
 import Chart from "./Chart";
 import classes from "./index.module.scss";
-import API from "../../constants/api";
-import { AxiosResponse } from "axios";
 import ordersAsyncActions from "../../store/actions/orders.action";
 import usersAsyncActions from "../../store/actions/users.action";
+import summaryAsyncActions from "../../store/actions/summary.action";
 
 const DashboardPage = () => {
-  const { request, orders, users, income } = useSelectState();
+  const { request, orders, users, summary } = useSelectState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isFetchingIncome, setIsFetchingIncome] = React.useState(true);
+  const [isFetchingSummary, setIsFetchingSummary] = React.useState(true);
   const [isFetchingOrders, setIsFetchingOrders] = React.useState(true);
   const [isFetchingUsers, setIsFetchingUsers] = React.useState(true);
 
   React.useEffect(() => {
-    dispatch(incomeAsyncActions.index());
+    dispatch(summaryAsyncActions.index());
     dispatch(ordersAsyncActions.index());
     dispatch(usersAsyncActions.index());
   }, []);
@@ -38,15 +36,15 @@ const DashboardPage = () => {
     }
     const RM = new RequestManager(request, dispatch);
 
-    if (RM.isFulfilled(incomeAsyncActions.index.typePrefix)) {
-      RM.consume(incomeAsyncActions.index.typePrefix);
-      setIsFetchingIncome(false);
+    if (RM.isFulfilled(summaryAsyncActions.index.typePrefix)) {
+      RM.consume(summaryAsyncActions.index.typePrefix);
+      setIsFetchingSummary(false);
       return;
     }
 
-    if (RM.isRejected(incomeAsyncActions.index.typePrefix)) {
-      RM.consume(incomeAsyncActions.index.typePrefix);
-      setIsFetchingIncome(false);
+    if (RM.isRejected(summaryAsyncActions.index.typePrefix)) {
+      RM.consume(summaryAsyncActions.index.typePrefix);
+      setIsFetchingSummary(false);
       return;
     }
 
@@ -91,9 +89,14 @@ const DashboardPage = () => {
               <p className={classes["title"]}>Available balance</p>
               <p
                 className={classes["amount"]}
-              >{`${cedi} ${income?.total?.toFixed(2)}`}</p>
+              >{`${cedi} ${summary?.income?.toFixed(2)}`}</p>
             </div>
-            <div className={classes["third-wrapper"]} />
+            <div className={classes["third-wrapper"]}>
+              <p className={classes["title"]}>Customers</p>
+              <p className={classes["amount"]}>{summary?.customers}</p>
+              <p className={classes["title"]}>Orders</p>
+              <p className={classes["amount"]}>{summary?.orders}</p>
+            </div>
           </div>
         </div>
         <div className={classes["section"]}>
@@ -131,6 +134,7 @@ const DashboardPage = () => {
                   return (
                     <div
                       className={classes["item"]}
+                      key={order.id}
                       onClick={() => {
                         navigate(`/orders/${order.id}`);
                       }}
@@ -191,9 +195,6 @@ const DashboardPage = () => {
                 <div className={classes["image"]}>
                   <p>placeholder</p>
                 </div>
-                {/* <div className={`${classes["col"]} ${classes["last"]}`}>
-                  <p>Full name</p>
-                </div> */}
                 <div className={`${classes["col"]} ${classes["last"]}`}>
                   <p>Email</p>
                 </div>
@@ -209,6 +210,7 @@ const DashboardPage = () => {
                   return (
                     <div
                       className={classes["item"]}
+                      key={user.id}
                       onClick={() => {
                         navigate(`/users/${user.id}`);
                       }}
@@ -226,9 +228,6 @@ const DashboardPage = () => {
                           // className={classes["image"]}
                         />
                       </button>
-                      {/* <div className={`${classes["col"]} ${classes["last"]}`}>
-                        <p>{`${user.firstname} ${user.lastname}`}</p>
-                      </div> */}
                       <div className={`${classes["col"]} ${classes["last"]}`}>
                         <div
                           onClick={(e) => {

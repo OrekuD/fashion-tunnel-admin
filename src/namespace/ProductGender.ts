@@ -20,6 +20,15 @@ namespace ProductGender {
     public static text = (status: Status) => {
       return State.TEXT[status];
     };
+
+    public static getId = (text: string) => {
+      for (const item of Object.entries(this.TEXT)) {
+        if (text === item[1]) {
+          return Number(item[0]);
+        }
+      }
+      return -1;
+    };
   }
 }
 

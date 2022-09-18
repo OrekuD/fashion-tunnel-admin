@@ -9,10 +9,11 @@ import products from "./slices/products.slice";
 import request from "./slices/request.slice";
 import users from "./slices/users.slice";
 import orders from "./slices/orders.slice";
-import income from "./slices/income.slice";
 import order from "./slices/order.slice";
 import user from "./slices/user.slice";
 import product from "./slices/product.slice";
+import upload from "./slices/upload.slice";
+import summary from "./slices/summary.slice";
 
 const reducers = {
   authentication,
@@ -22,10 +23,11 @@ const reducers = {
   request,
   users,
   orders,
-  income,
   order,
   user,
   product,
+  upload,
+  summary,
 };
 
 const rootReducer = combineReducers(reducers);

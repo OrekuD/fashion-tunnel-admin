@@ -15,6 +15,9 @@ export interface UIState {
   isCartVisible: boolean;
   isProfileVisible: boolean;
 }
+export interface UploadState {
+  images: Array<string>;
+}
 
 export interface ProductsState {
   list: Array<Product>;
@@ -27,6 +30,13 @@ export interface OrdersState {
 export interface IncomeState {
   total: number;
 }
+
+export interface SummaryState {
+  income: number;
+  customers: number;
+  orders: number;
+}
+
 export interface UsersState {
   list: Array<User>;
 }

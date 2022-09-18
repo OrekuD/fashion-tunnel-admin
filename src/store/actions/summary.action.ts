@@ -1,17 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import API from "../../constants/api";
-import Income from "../../models/Income";
+import Summary from "../../models/Summary";
 import { requestActions } from "../slices/request.slice";
 
-const index = createAsyncThunk("icome/index", async (_, thunkApi) => {
+const index = createAsyncThunk("summary/index", async (_, thunkApi) => {
   thunkApi.dispatch(requestActions.started(index.typePrefix));
   try {
-    const response = await API.client.get<any, AxiosResponse<Income>>(
-      "/admin/income"
+    const response = await API.client.get<any, AxiosResponse<Summary>>(
+      "/admin/summary"
     );
-
-    // console.log({ data: response.data });
     thunkApi.dispatch(requestActions.beforeFulfilled(index.typePrefix));
     return response.data;
   } catch (error) {
@@ -20,8 +18,8 @@ const index = createAsyncThunk("icome/index", async (_, thunkApi) => {
   }
 });
 
-const incomeAsyncActions = {
+const summaryAsyncActions = {
   index,
 };
 
-export default incomeAsyncActions;
+export default summaryAsyncActions;
