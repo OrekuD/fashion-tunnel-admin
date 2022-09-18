@@ -1,5 +1,5 @@
 import { CPA, OrdersState } from "../types";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import postRequest from "../postRequest";
 import postErrorRequest from "../postErrorRequest";
 import ordersAsyncActions from "../actions/orders.action";
@@ -24,6 +24,14 @@ const slice = createSlice({
   initialState,
   reducers: {
     clear: () => initialState,
+    addNewOrder: (state, action: PayloadAction<SimpleOrder>) => {
+      const orderIndex = state.list.findIndex(
+        ({ id }) => id === action.payload.id
+      );
+      if (orderIndex < 0) {
+        state.list.unshift(action.payload);
+      }
+    },
   },
   extraReducers: {
     [ordersAsyncActions.index.fulfilled.type]: (

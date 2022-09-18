@@ -67,3 +67,11 @@ export interface OrderStatusTimeStamp {
   status: OrderStatus.Status;
   time: string;
 }
+
+export enum Events {
+  USER_ADDRESS_CREATE = "user:address:create",
+  USER_ORDER_CREATE = "user:order:create",
+  USER_PROFILE_UPDATE = "user:profile:update",
+  USER_FAVOURITE_ITEM = "user:favourite:item",
+  ORDER_STATUS_CHANGE = "order:status:change",
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
 import App from "./App";
+import SocketManager from "./components/SocketManager";
 import initializeStore from "./store";
 
 const Bootstrap = () => {
@@ -19,9 +20,12 @@ const Bootstrap = () => {
   if (!store) {
     return <></>;
   }
+
   return (
     <Provider store={store}>
-      <App />
+      <SocketManager>
+        <App />
+      </SocketManager>
     </Provider>
   );
 };
