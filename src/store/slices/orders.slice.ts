@@ -7,6 +7,7 @@ import Order from "../../models/Order";
 import SimpleOrder from "../../models/SimpleOrder";
 import orderAsyncActions from "../actions/order.action";
 import UpdateOrderStatusResponse from "../../network/responses/UpdateOrderStatusResponse";
+import OrdersResponse from "../../network/responses/OrdersResponse";
 
 const initialState: OrdersState = {
   list: [],
@@ -27,9 +28,10 @@ const slice = createSlice({
   extraReducers: {
     [ordersAsyncActions.index.fulfilled.type]: (
       state,
-      action: CPA<Array<SimpleOrder>>
+      action: CPA<OrdersResponse>
     ) => {
-      state.list = action.payload;
+      state.list = action.payload.list;
+      state.meta = action.payload.meta;
       postRequest(action);
     },
     [ordersAsyncActions.index.rejected.type]: (_, action: CPA<any>) => {
@@ -52,12 +54,12 @@ const slice = createSlice({
       if (timeStampIndex < 0) {
         statusTimeStamps.unshift({
           status: action.payload.status,
-          time: action.payload.timeStamp,
+          time: action.payload.time,
         });
       } else {
         statusTimeStamps.splice(timeStampIndex, 1, {
           status: action.payload.status,
-          time: action.payload.timeStamp,
+          time: action.payload.time,
         });
       }
       state.list.splice(orderIndex, 1, {

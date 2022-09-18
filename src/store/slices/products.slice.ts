@@ -5,6 +5,7 @@ import Product from "../../models/Product";
 import postRequest from "../postRequest";
 import postErrorRequest from "../postErrorRequest";
 import OkResponse from "../../network/responses/OkResponse";
+import ProductsResponse from "../../network/responses/ProductsResponse";
 
 const initialState: ProductsState = {
   list: [],
@@ -25,9 +26,10 @@ const slice = createSlice({
   extraReducers: {
     [productsAsyncActions.index.fulfilled.type]: (
       state,
-      action: CPA<Array<Product>>
+      action: CPA<ProductsResponse>
     ) => {
-      state.list = action.payload;
+      state.list = action.payload.list;
+      state.meta = action.payload.meta;
       postRequest(action);
     },
     [productsAsyncActions.index.rejected.type]: (_, action: CPA<any>) => {

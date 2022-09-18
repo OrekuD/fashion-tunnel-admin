@@ -10,6 +10,7 @@ const colors = {
   purple: "#313579",
   lightdeepgrey: "rgba(41, 37, 37, 0.1)",
   deepgrey: "#292525",
+  green: "#32BA77",
 };
 
 export default colors;

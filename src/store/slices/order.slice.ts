@@ -37,6 +37,23 @@ const slice = createSlice({
     ) => {
       if (!state?.order) return;
       state.order.status = action.payload.status;
+      const statusTimeStamps = state.order.statusTimeStamps;
+      const timeStampIndex = state.order.statusTimeStamps.findIndex(
+        ({ status }) => status === action.payload.status
+      );
+      if (timeStampIndex < 0) {
+        statusTimeStamps.unshift({
+          status: action.payload.status,
+          time: action.payload.time,
+        });
+      } else {
+        console.log("--yes");
+        statusTimeStamps.splice(timeStampIndex, 1, {
+          status: action.payload.status,
+          time: action.payload.time,
+        });
+      }
+      state.order.statusTimeStamps = statusTimeStamps;
       postRequest(action);
     },
     [orderAsyncActions.updateOrderStatus.rejected.type]: (

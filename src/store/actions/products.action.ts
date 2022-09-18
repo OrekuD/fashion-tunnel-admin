@@ -3,24 +3,30 @@ import { AxiosResponse } from "axios";
 import API from "../../constants/api";
 import Product from "../../models/Product";
 import CreateProductRequest from "../../network/requests/CreateProductRequest";
+import PaginatedRequest from "../../network/requests/PaginatedRequest";
 import UpdateProductRequest from "../../network/requests/UpdateProductRequest";
 import OkResponse from "../../network/responses/OkResponse";
+import ProductsResponse from "../../network/responses/ProductsResponse";
 import { requestActions } from "../slices/request.slice";
 
-const index = createAsyncThunk("products/index", async (_, thunkApi) => {
-  thunkApi.dispatch(requestActions.started(index.typePrefix));
-  try {
-    const response = await API.client.get<any, AxiosResponse<Array<Product>>>(
-      "/admin/products"
-    );
+const index = createAsyncThunk(
+  "products/index",
+  async (payload: PaginatedRequest, thunkApi) => {
+    thunkApi.dispatch(requestActions.started(index.typePrefix));
+    try {
+      const response = await API.client.get<
+        any,
+        AxiosResponse<ProductsResponse>
+      >(`/admin/products?page=${payload.page}&size=${payload.size}`);
 
-    thunkApi.dispatch(requestActions.beforeFulfilled(index.typePrefix));
-    return response.data;
-  } catch (error) {
-    thunkApi.dispatch(requestActions.beforeRejected(index.typePrefix));
-    return thunkApi.rejectWithValue({ error });
+      thunkApi.dispatch(requestActions.beforeFulfilled(index.typePrefix));
+      return response.data;
+    } catch (error) {
+      thunkApi.dispatch(requestActions.beforeRejected(index.typePrefix));
+      return thunkApi.rejectWithValue({ error });
+    }
   }
-});
+);
 
 const getProduct = createAsyncThunk(
   "products/get",

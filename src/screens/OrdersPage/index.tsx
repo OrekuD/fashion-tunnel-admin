@@ -13,12 +13,8 @@ const OrdersPage = () => {
   const { request, orders } = useSelectState();
 
   React.useEffect(() => {
-    dispatch(ordersAsyncActions.index());
+    dispatch(ordersAsyncActions.index({ page: 1, size: 25 }));
   }, []);
-
-  // React.useEffect(() => {
-  //   console.log({ ____orders: orders.list[0] });
-  // }, [orders]);
 
   const [updatedAt] = React.useState(request.updatedAt);
 
@@ -43,7 +39,7 @@ const OrdersPage = () => {
 
   return (
     <div className={classes["container"]}>
-      <p className={classes["title"]}>Products</p>
+      <p className={classes["title"]}>Orders</p>
       <div
         className={classes["list"]}
         onScroll={(e) => {

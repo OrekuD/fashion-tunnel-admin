@@ -1,6 +1,7 @@
 import OrderStatus from "../namespace/OrderStatus";
 import { DetailedOrderProduct, OrderStatusTimeStamp } from "../types";
 import User from "./User";
+import UserAddress from "./UserAddress";
 
 export default interface Order {
   id: string;
@@ -8,6 +9,7 @@ export default interface Order {
   subtotal: number;
   discount: number;
   products: Array<DetailedOrderProduct>;
+  deliveryAddress: UserAddress;
   user: User;
   orderNumber: number;
   status: OrderStatus.Status;

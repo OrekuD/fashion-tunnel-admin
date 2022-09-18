@@ -1,17 +1,12 @@
-import { AxiosResponse } from "axios";
 import React from "react";
 import classes from "./index.module.scss";
-import API from "../../constants/api";
 import { useDispatch } from "react-redux";
 import { useSelectState } from "../../store/selectors";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import productsAsyncActions from "../../store/actions/products.action";
 import RequestManager from "../../store/request-manager";
-import ProductGender from "../../namespace/ProductGender";
-import { cedi } from "../../constants";
-import ProductCategories from "../../namespace/ProductCategories";
 import ProductItem from "./ProductItem";
-import { PlusIcon } from "../../components/Icons";
+import { ChevronRightIcon, PlusIcon } from "../../components/Icons";
 import colors from "../../constants/colors";
 
 const ProductsPage = () => {
@@ -22,7 +17,7 @@ const ProductsPage = () => {
   const { request, products } = useSelectState();
 
   React.useEffect(() => {
-    dispatch(productsAsyncActions.index());
+    dispatch(productsAsyncActions.index({ page: 1, size: 25 }));
   }, []);
 
   const [updatedAt] = React.useState(request.updatedAt);
@@ -45,6 +40,11 @@ const ProductsPage = () => {
       return;
     }
   }, [updatedAt, request.updatedAt]);
+
+  const fetchUsers = (page: number) => {
+    setIsLoading(true);
+    dispatch(productsAsyncActions.index({ page, size: 25 }));
+  };
 
   return (
     <div className={classes["container"]}>
@@ -97,7 +97,7 @@ const ProductsPage = () => {
           </div>
         </div>
         {products.list.length === 0 ? (
-          <div className={classes["no-orders"]}>
+          <div className={classes["no-products"]}>
             <p>You have no products</p>
           </div>
         ) : (
@@ -108,6 +108,105 @@ const ProductsPage = () => {
           </>
         )}
       </div>
+      {products.list.length > 0 && (
+        <div className={classes["pagination"]}>
+          <button
+            className={classes["button"]}
+            disabled={products.meta.currentPage === 1}
+            onClick={() =>
+              fetchUsers(
+                products.meta.currentPage === 1
+                  ? 1
+                  : products.meta.currentPage - 1
+              )
+            }
+          >
+            <ChevronRightIcon
+              width={24}
+              height={24}
+              color={colors.deepgrey}
+              style={{
+                transform: "rotate(180deg)",
+              }}
+            />
+          </button>
+          <button className={classes["button"]} onClick={() => fetchUsers(1)}>
+            <p
+              style={{
+                fontWeight: products.meta.currentPage === 1 ? 600 : 400,
+                color:
+                  products.meta.currentPage === 1 ? colors.deepgrey : undefined,
+              }}
+            >
+              1
+            </p>
+          </button>
+          {products.meta.totalPages > 1 && (
+            <button className={classes["button"]} onClick={() => fetchUsers(2)}>
+              <p
+                style={{
+                  fontWeight: products.meta.currentPage === 2 ? 600 : 400,
+                  color:
+                    products.meta.currentPage === 2
+                      ? colors.deepgrey
+                      : undefined,
+                }}
+              >
+                2
+              </p>
+            </button>
+          )}
+          {products.meta.currentPage > 2 &&
+            products.meta.currentPage !== products.meta.totalPages && (
+              <button
+                className={classes["button"]}
+                onClick={() => fetchUsers(products.meta.currentPage)}
+              >
+                <p
+                  style={{
+                    fontWeight: 600,
+                    color: colors.deepgrey,
+                  }}
+                >
+                  {products.meta.currentPage}
+                </p>
+              </button>
+            )}
+          {products.meta.totalPages > 3 && (
+            <p className={classes["dots"]}>...</p>
+          )}
+          {products.meta.totalPages > 3 && (
+            <button
+              className={classes["button"]}
+              onClick={() => fetchUsers(products.meta.totalPages)}
+            >
+              <p
+                style={{
+                  fontWeight:
+                    products.meta.currentPage === products.meta.totalPages
+                      ? 600
+                      : 400,
+                  color:
+                    products.meta.currentPage === products.meta.totalPages
+                      ? colors.deepgrey
+                      : undefined,
+                }}
+              >
+                {products.meta.totalPages}
+              </p>
+            </button>
+          )}
+          <button
+            className={classes["button"]}
+            disabled={products.meta.nextPage === products.meta.currentPage}
+            onClick={() => {
+              fetchUsers(products.meta.nextPage);
+            }}
+          >
+            <ChevronRightIcon width={24} height={24} color={colors.deepgrey} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

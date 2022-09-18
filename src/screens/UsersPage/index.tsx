@@ -89,7 +89,7 @@ const UsersPage = () => {
           </div>
         </div>
         {users.list.length === 0 ? (
-          <div className={classes["no-orders"]}>
+          <div className={classes["no-users"]}>
             <p>You have no users</p>
           </div>
         ) : (
@@ -131,14 +131,36 @@ const UsersPage = () => {
               1
             </p>
           </button>
-          <button className={classes["button"]}>
-            <p>2</p>
-          </button>
-          <button className={classes["button"]}>
-            <p>3</p>
-          </button>
-
-          <p className={classes["dots"]}>...</p>
+          {users.meta.totalPages > 1 && (
+            <button className={classes["button"]} onClick={() => fetchUsers(2)}>
+              <p
+                style={{
+                  fontWeight: users.meta.currentPage === 2 ? 600 : 400,
+                  color:
+                    users.meta.currentPage === 2 ? colors.deepgrey : undefined,
+                }}
+              >
+                2
+              </p>
+            </button>
+          )}
+          {users.meta.currentPage > 2 &&
+            users.meta.currentPage !== users.meta.totalPages && (
+              <button
+                className={classes["button"]}
+                onClick={() => fetchUsers(users.meta.currentPage)}
+              >
+                <p
+                  style={{
+                    fontWeight: 600,
+                    color: colors.deepgrey,
+                  }}
+                >
+                  {users.meta.currentPage}
+                </p>
+              </button>
+            )}
+          {users.meta.totalPages > 3 && <p className={classes["dots"]}>...</p>}
           <button
             className={classes["button"]}
             onClick={() => fetchUsers(users.meta.totalPages)}

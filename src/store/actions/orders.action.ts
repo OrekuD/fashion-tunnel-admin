@@ -2,26 +2,29 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import API from "../../constants/api";
 import Order from "../../models/Order";
-import SimpleOrder from "../../models/SimpleOrder";
+import PaginatedRequest from "../../network/requests/PaginatedRequest";
+import OrdersResponse from "../../network/responses/OrdersResponse";
 import { requestActions } from "../slices/request.slice";
 
-const index = createAsyncThunk("orders/index", async (_, thunkApi) => {
-  thunkApi.dispatch(requestActions.started(index.typePrefix));
-  try {
-    const response = await API.client.get<
-      any,
-      AxiosResponse<Array<SimpleOrder>>
-    >("/admin/orders");
+const index = createAsyncThunk(
+  "orders/index",
+  async (payload: PaginatedRequest, thunkApi) => {
+    thunkApi.dispatch(requestActions.started(index.typePrefix));
+    try {
+      const response = await API.client.get<any, AxiosResponse<OrdersResponse>>(
+        `/admin/orders?page=${payload.page}&size=${payload.size}`
+      );
 
-    // console.log({ data: response.data });
-    thunkApi.dispatch(requestActions.beforeFulfilled(index.typePrefix));
-    return response.data;
-  } catch (error) {
-    // console.log({ ____error: error });
-    thunkApi.dispatch(requestActions.beforeRejected(index.typePrefix));
-    return thunkApi.rejectWithValue({ error });
+      // console.log({ data: response.data });
+      thunkApi.dispatch(requestActions.beforeFulfilled(index.typePrefix));
+      return response.data;
+    } catch (error) {
+      // console.log({ ____error: error });
+      thunkApi.dispatch(requestActions.beforeRejected(index.typePrefix));
+      return thunkApi.rejectWithValue({ error });
+    }
   }
-});
+);
 
 const getOrder = createAsyncThunk(
   "orders/get",

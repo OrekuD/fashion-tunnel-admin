@@ -25,7 +25,7 @@ const DashboardPage = () => {
 
   React.useEffect(() => {
     dispatch(summaryAsyncActions.index());
-    dispatch(ordersAsyncActions.index());
+    dispatch(ordersAsyncActions.index({ page: 1, size: 25 }));
     dispatch(usersAsyncActions.index({ page: 1, size: 25 }));
   }, []);
 
@@ -135,55 +135,69 @@ const DashboardPage = () => {
                 </div>
               </div>
               <div className={classes["list"]}>
-                {orders.list.slice(0, 3).map((order) => {
-                  return (
-                    <div
-                      className={classes["item"]}
-                      key={order.id}
-                      onClick={() => {
-                        navigate(`/orders/${order.id}`);
-                      }}
-                    >
-                      <button
-                        className={classes["image"]}
-                        onClick={(e) => {
-                          navigate(`/users/${order.user.id}`);
-                          e.stopPropagation();
-                        }}
-                      >
-                        <img
-                          src={
-                            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-                          }
-                          alt={order.user.email}
-                          // className={classes["image"]}
-                        />
-                      </button>
-                      <div className={classes["col"]}>
-                        <p>#{formatOrderNumber(order.orderNumber + "", 5)}</p>
-                      </div>
-                      <div className={classes["col"]}>
-                        <p>{`${cedi} ${order.total.toFixed(2)}`}</p>
-                      </div>
-                      <div className={`${classes["col"]} ${classes["sm"]}`}>
-                        <p>{order.numberOfProducts}</p>
-                      </div>
-                      <div className={classes["col"]}>
-                        <p>{format(new Date(order.createdAt), "dd/MM/yyyy")}</p>
-                      </div>
-                      <div className={`${classes["col"]} ${classes["last"]}`}>
+                {orders.list.length === 0 ? (
+                  <div className={classes["no-items"]}>
+                    <p>You have no orders</p>
+                  </div>
+                ) : (
+                  <>
+                    {orders.list.slice(0, 3).map((order) => {
+                      return (
                         <div
-                          onClick={(e) => {
-                            navigate(`/users/${order.user.id}`);
-                            e.stopPropagation();
+                          className={classes["item"]}
+                          key={order.id}
+                          onClick={() => {
+                            navigate(`/orders/${order.id}`);
                           }}
                         >
-                          <p>{`${order.user.email}`}</p>
+                          <button
+                            className={classes["image"]}
+                            onClick={(e) => {
+                              navigate(`/users/${order.user.id}`);
+                              e.stopPropagation();
+                            }}
+                          >
+                            <img
+                              src={
+                                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+                              }
+                              alt={order.user.email}
+                              // className={classes["image"]}
+                            />
+                          </button>
+                          <div className={classes["col"]}>
+                            <p>
+                              #{formatOrderNumber(order.orderNumber + "", 5)}
+                            </p>
+                          </div>
+                          <div className={classes["col"]}>
+                            <p>{`${cedi} ${order.total.toFixed(2)}`}</p>
+                          </div>
+                          <div className={`${classes["col"]} ${classes["sm"]}`}>
+                            <p>{order.numberOfProducts}</p>
+                          </div>
+                          <div className={classes["col"]}>
+                            <p>
+                              {format(new Date(order.createdAt), "dd/MM/yyyy")}
+                            </p>
+                          </div>
+                          <div
+                            className={`${classes["col"]} ${classes["last"]}`}
+                          >
+                            <div
+                              onClick={(e) => {
+                                navigate(`/users/${order.user.id}`);
+                                e.stopPropagation();
+                              }}
+                            >
+                              <p>{`${order.user.email}`}</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                      );
+                    })}
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -211,47 +225,59 @@ const DashboardPage = () => {
                 </div>
               </div>
               <div className={classes["list"]}>
-                {users.list.slice(0, 3).map((user) => {
-                  return (
-                    <div
-                      className={classes["item"]}
-                      key={user.id}
-                      onClick={() => {
-                        navigate(`/users/${user.id}`);
-                      }}
-                    >
-                      <button
-                        className={classes["image"]}
-                        onClick={(e) => {
-                          navigate(`/users/${user.id}`);
-                          e.stopPropagation();
-                        }}
-                      >
-                        <img
-                          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-                          alt={user.firstname}
-                          // className={classes["image"]}
-                        />
-                      </button>
-                      <div className={`${classes["col"]} ${classes["last"]}`}>
+                {users.list.length === 0 ? (
+                  <div className={classes["no-items"]}>
+                    <p>You have no users</p>
+                  </div>
+                ) : (
+                  <>
+                    {users.list.slice(0, 3).map((user) => {
+                      return (
                         <div
-                          onClick={(e) => {
+                          className={classes["item"]}
+                          key={user.id}
+                          onClick={() => {
                             navigate(`/users/${user.id}`);
-                            e.stopPropagation();
                           }}
                         >
-                          <p>{`${user.email}`}</p>
+                          <button
+                            className={classes["image"]}
+                            onClick={(e) => {
+                              navigate(`/users/${user.id}`);
+                              e.stopPropagation();
+                            }}
+                          >
+                            <img
+                              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+                              alt={user.firstname}
+                              // className={classes["image"]}
+                            />
+                          </button>
+                          <div
+                            className={`${classes["col"]} ${classes["last"]}`}
+                          >
+                            <div
+                              onClick={(e) => {
+                                navigate(`/users/${user.id}`);
+                                e.stopPropagation();
+                              }}
+                            >
+                              <p>{`${user.email}`}</p>
+                            </div>
+                          </div>
+                          <div className={classes["col"]}>
+                            <p>{user.deviceType}</p>
+                          </div>
+                          <div className={classes["col"]}>
+                            <p>
+                              {format(new Date(user.createdAt), "dd/MM/yyyy")}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      <div className={classes["col"]}>
-                        <p>{user.deviceType}</p>
-                      </div>
-                      <div className={classes["col"]}>
-                        <p>{format(new Date(user.createdAt), "dd/MM/yyyy")}</p>
-                      </div>
-                    </div>
-                  );
-                })}
+                      );
+                    })}
+                  </>
+                )}
               </div>
             </div>
           </div>
