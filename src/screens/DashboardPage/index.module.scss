@@ -59,7 +59,7 @@
         background-color: $white;
         border-radius: 12px;
         margin-bottom: 2rem;
-        padding: 1.5rem;
+        padding: 2.5rem 0rem;
       }
 
       .wrapper {
@@ -262,6 +262,7 @@
         .first-wrapper {
           width: calc(60% - 1rem);
           height: 100%;
+          padding: 1.5rem;
         }
 
         .wrapper {
