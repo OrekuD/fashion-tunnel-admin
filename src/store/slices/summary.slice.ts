@@ -9,6 +9,8 @@ const initialState: SummaryState = {
   customers: 0,
   income: 0,
   orders: 0,
+  products: 0,
+  chart: [],
 };
 
 const slice = createSlice({
@@ -25,6 +27,8 @@ const slice = createSlice({
       state.customers = action.payload.customers;
       state.income = action.payload.income;
       state.orders = action.payload.orders;
+      state.products = action.payload.products;
+      state.chart = action.payload.chart;
       postRequest(action);
     },
     [summaryAsyncActions.index.rejected.type]: (_, action: CPA<any>) => {

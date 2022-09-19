@@ -3,7 +3,7 @@ import Order from "../models/Order";
 import Product from "../models/Product";
 import SimpleOrder from "../models/SimpleOrder";
 import User from "../models/User";
-import { DetailedOrderProduct } from "../types";
+import { Chart, DetailedOrderProduct } from "../types";
 
 export interface AuthenticationState {
   isAuthenticated: boolean;
@@ -44,6 +44,8 @@ export interface SummaryState {
   income: number;
   customers: number;
   orders: number;
+  products: number;
+  chart: Array<Chart>;
 }
 
 export interface UsersState {

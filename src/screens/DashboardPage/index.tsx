@@ -15,6 +15,7 @@ import usersAsyncActions from "../../store/actions/users.action";
 import summaryAsyncActions from "../../store/actions/summary.action";
 import formatNumber from "../../utils/formatNumber";
 import OrderStatus from "../../namespace/OrderStatus";
+import formatAmount from "../../utils/formatAmount";
 
 const DashboardPage = () => {
   const { request, orders, users, summary } = useSelectState();
@@ -89,21 +90,29 @@ const DashboardPage = () => {
           <div className={classes["wrapper"]}>
             <div className={classes["second-wrapper"]}>
               <p className={classes["title"]}>Available balance</p>
-              <p className={classes["amount"]}>{`${cedi} ${formatNumber(
-                summary?.income
+              <p className={classes["amount"]}>{`${cedi} ${formatAmount(
+                summary.income
               )}`}</p>
             </div>
             <div className={classes["third-wrapper"]}>
-              <p className={classes["title"]}>Customers</p>
-              <p className={classes["amount"]}>
-                {formatNumber(summary?.customers)}
-              </p>
-              <p className={classes["title"]} style={{ marginTop: 24 }}>
-                Orders
-              </p>
-              <p className={classes["amount"]}>
-                {formatNumber(summary?.orders)}
-              </p>
+              <div>
+                <p className={classes["title"]}>Customers</p>
+                <p className={classes["amount"]}>
+                  {formatNumber(summary.customers)}
+                </p>
+              </div>
+              <div>
+                <p className={classes["title"]}>Orders</p>
+                <p className={classes["amount"]}>
+                  {formatNumber(summary.orders)}
+                </p>
+              </div>
+              <div>
+                <p className={classes["title"]}>Products</p>
+                <p className={classes["amount"]}>
+                  {formatNumber(summary.products)}
+                </p>
+              </div>
             </div>
           </div>
         </div>

@@ -33,6 +33,12 @@ export interface DetailedOrderProduct {
   images: Array<string>;
 }
 
+export interface Chart {
+  name: string;
+  users: number;
+  orders: number;
+}
+
 export namespace Request {
   export enum Status {
     PENDING = "pending",
