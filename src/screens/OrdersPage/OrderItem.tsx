@@ -65,7 +65,8 @@ const OrderItem = (props: Props) => {
         }}
       >
         <img
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+          // src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+          src={props.order.user.profilePicture}
           alt={props.order.user.email}
           // className={classes["image"]}
         />
@@ -95,7 +96,7 @@ const OrderItem = (props: Props) => {
           <p>{`${props.order.user.email}`}</p>
         </button>
       </div>
-      <div className={classes["actions"]}>
+      {/* <div className={classes["actions"]}>
         <button
           className={classes["button"]}
           disabled
@@ -120,7 +121,7 @@ const OrderItem = (props: Props) => {
             <TrashIcon width={18} height={18} color={colors.white} />
           )}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -48,7 +48,7 @@ const App = () => {
       }
     };
 
-    launch();
+    launch().then(() => {});
   }, []);
 
   return (

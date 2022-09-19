@@ -57,6 +57,14 @@ const UserPage = () => {
           <p className={classes["value"]}>{user.user.lastname}</p>
         </div>
         <div className={classes["section"]}>
+          <p className={classes["label"]}>Avatar</p>
+          <img
+            src={user.user.profilePicture}
+            alt={user.user.email}
+            className={classes["avatar"]}
+          />
+        </div>
+        <div className={classes["section"]}>
           <p className={classes["label"]}>E-mail</p>
           <p className={classes["value"]}>{user.user.email}</p>
         </div>

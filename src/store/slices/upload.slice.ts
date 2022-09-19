@@ -31,7 +31,7 @@ const slice = createSlice({
     ) => {
       postErrorRequest(state, action, initialState);
     },
-    [productsAsyncActions.index.fulfilled.type]: () => initialState,
+    [productsAsyncActions.createProduct.fulfilled.type]: () => initialState,
   },
 });
 

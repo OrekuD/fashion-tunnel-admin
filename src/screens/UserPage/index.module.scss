@@ -52,22 +52,17 @@
     padding: 1rem 0;
     border-bottom: 1px solid $lightdeepgrey;
 
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-top: 0.5rem;
+    }
+
     .label {
       font-size: 1rem;
       font-weight: 500;
       color: $deepgrey;
-    }
-
-    .images {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 0.5rem;
-
-      .image {
-        object-fit: contain;
-        margin: 0 0.5rem 0.5rem 0;
-        width: 100px;
-      }
     }
 
     .value {

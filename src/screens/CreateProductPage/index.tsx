@@ -175,7 +175,7 @@ const CreateProductPage = () => {
               maxLength={1}
               className={classes["upload-file"]}
               onChange={(e) => {
-                if (e.target?.files) {
+                if (e.target?.files && e.target.files.length > 0) {
                   setProductImage(e.target.files[0]);
                 }
               }}

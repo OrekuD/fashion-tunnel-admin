@@ -85,9 +85,9 @@ const OrdersPage = () => {
           <div className={`${classes["col"]} ${classes["lg"]}`}>
             <p>User</p>
           </div>
-          <div className={classes["actions"]}>
+          {/* <div className={classes["actions"]}>
             <p>Actions</p>
-          </div>
+          </div> */}
         </div>
         {orders.list.length === 0 ? (
           <div className={classes["no-orders"]}>

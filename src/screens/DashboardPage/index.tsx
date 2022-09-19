@@ -96,7 +96,7 @@ const DashboardPage = () => {
             </div>
             <div className={classes["third-wrapper"]}>
               <div>
-                <p className={classes["title"]}>Customers</p>
+                <p className={classes["title"]}>Users</p>
                 <p className={classes["amount"]}>
                   {formatNumber(summary.customers)}
                 </p>
@@ -170,9 +170,10 @@ const DashboardPage = () => {
                             }}
                           >
                             <img
-                              src={
-                                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-                              }
+                              // src={
+                              //   "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+                              // }
+                              src={order.user.profilePicture}
                               alt={order.user.email}
                               // className={classes["image"]}
                             />
@@ -274,7 +275,8 @@ const DashboardPage = () => {
                             }}
                           >
                             <img
-                              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+                              // src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+                              src={user.profilePicture}
                               alt={user.firstname}
                               // className={classes["image"]}
                             />

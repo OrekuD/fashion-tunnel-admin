@@ -6,4 +6,5 @@ export default interface User {
   lastname: string;
   deviceType: string;
   createdAt: string;
+  profilePicture: string;
 }

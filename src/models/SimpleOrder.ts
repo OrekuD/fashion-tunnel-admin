@@ -12,6 +12,7 @@ export default interface SimpleOrder {
   user: {
     id: string;
     email: string;
+    profilePicture: string;
   };
   createdAt: string;
 }
